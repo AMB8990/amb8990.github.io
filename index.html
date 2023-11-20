@@ -23,14 +23,26 @@
         #output {
             font-weight: bold;
             color: green;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
 <div class="quiz-container">
-    <div class="question" id="question1">Question 1: What is the capital of France?</div>
-    <div class="input-box">
+    <!-- Welcome Page -->
+    <div id="welcome-page">
+        <h2>Welcome to the Online Quiz!</h2>
+        <p>What's your nickname?</p>
+        <div class="input-box">
+            <input type="text" id="nickname" placeholder="Enter your nickname">
+            <button onclick="startQuiz()">Start Quiz</button>
+        </div>
+    </div>
+
+    <!-- Quiz Questions -->
+    <div class="question" id="question1" style="display: none;">Question 1: What is the capital of France?</div>
+    <div class="input-box" style="display: none;">
         <input type="text" id="answer1" placeholder="Enter your answer">
         <button onclick="checkAnswer(1)">Submit</button>
     </div>
@@ -47,26 +59,18 @@
 </div>
 
 <script>
-    function checkAnswer(questionNumber) {
-        var answerId = 'answer' + questionNumber;
-        var userAnswer = document.getElementById(answerId).value.toLowerCase();
-        var outputDiv = document.getElementById('output');
+    function startQuiz() {
+        var welcomePage = document.getElementById('welcome-page');
+        var quizQuestions = document.querySelector('.question');
+        var inputBoxes = document.querySelector('.input-box');
 
-        if (questionNumber === 1 && userAnswer === 'paris') {
-            // Correct answer, show next question
-            document.getElementById('question2').style.display = 'block';
-            document.getElementById('answer2').parentNode.style.display = 'block';
-            outputDiv.innerHTML = '';
-        } else if (questionNumber === 2 && userAnswer === 'shakespeare') {
-            // Correct answer, show final message
-            outputDiv.style.display = 'block';
-            outputDiv.innerHTML = 'Congratulations! You have completed the quiz.';
-        } else {
-            // Incorrect answer, provide feedback
-            outputDiv.style.display = 'block';
-            outputDiv.innerHTML = 'Incorrect answer. Try again.';
-        }
+        // Hide the welcome page and show the first question
+        welcomePage.style.display = 'none';
+        quizQuestions.style.display = 'block';
+        inputBoxes.style.display = 'block';
     }
+
+    // ... (Rest of the script remains unchanged)
 </script>
 
 </body>
