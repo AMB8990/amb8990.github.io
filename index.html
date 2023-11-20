@@ -29,7 +29,7 @@
 <body>
 
 <div class="quiz-container">
-    <div class="question" id="question1">Question 1: What is the capital of France?</div>
+    <div class="question" id="question1">HELLO \n~歡迎來到Amber的密室逃脫~</div>
     <div class="input-box">
         <input type="text" id="answer1" placeholder="Enter your answer">
         <button onclick="checkAnswer(1)">Submit</button>
@@ -52,7 +52,7 @@
         var userAnswer = document.getElementById(answerId).value.toLowerCase();
         var outputDiv = document.getElementById('output');
 
-        if (questionNumber === 1 && userAnswer === 'paris') {
+        if (questionNumber === 1 && userAnswer === '進入遊戲') {
             // Correct answer, show next question
             document.getElementById('question2').style.display = 'block';
             document.getElementById('answer2').parentNode.style.display = 'block';
