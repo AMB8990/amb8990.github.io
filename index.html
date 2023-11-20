@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .quiz-container {
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .input-box {
+            margin-bottom: 20px;
+        }
+        #output {
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div class="question" id="question1">Question 1: What is the capital of France?</div>
+    <div class="input-box">
+        <input type="text" id="answer1" placeholder="Enter your answer">
+        <button onclick="checkAnswer(1)">Submit</button>
+    </div>
+
+    <div class="question" id="question2" style="display: none;">Question 2: Who wrote 'Romeo and Juliet'?</div>
+    <div class="input-box" style="display: none;">
+        <input type="text" id="answer2" placeholder="Enter your answer">
+        <button onclick="checkAnswer(2)">Submit</button>
+    </div>
+
+    <!-- Repeat similar blocks for the remaining questions -->
+
+    <div id="output" style="display: none;"></div>
+</div>
+
+<script>
+    function checkAnswer(questionNumber) {
+        var answerId = 'answer' + questionNumber;
+        var userAnswer = document.getElementById(answerId).value.toLowerCase();
+        var outputDiv = document.getElementById('output');
+
+        if (questionNumber === 1 && userAnswer === 'paris') {
+            // Correct answer, show next question
+            document.getElementById('question2').style.display = 'block';
+            document.getElementById('answer2').parentNode.style.display = 'block';
+            outputDiv.innerHTML = '';
+        } else if (questionNumber === 2 && userAnswer === 'shakespeare') {
+            // Correct answer, show final message
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = 'Congratulations! You have completed the quiz.';
+        } else {
+            // Incorrect answer, provide feedback
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = 'Incorrect answer. Try again.';
+        }
+    }
+</script>
+
+</body>
+</html>
