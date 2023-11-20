@@ -120,24 +120,14 @@
             document.getElementById('question4').style.display = 'block';
             document.getElementById('answer4').parentNode.style.display = 'block';
             outputDiv.innerHTML = '';
-        } else if (questionNumber === 4 && userAnswer === '平底鍋') {
-            // Correct answer, show next question
-            document.getElementById('question5').style.display = 'block';
-            document.getElementById('answer5').parentNode.style.display = 'block';
-            outputDiv.innerHTML = '';
-        } else if (questionNumber === 5 && userAnswer === ' ') {
-            // Correct answer, show next question
-            document.getElementById('question6').style.display = 'block';
-            document.getElementById('answer6').parentNode.style.display = 'block';
-            outputDiv.innerHTML = '';
-        } else if (questionNumber === 6 && userAnswer === ' ') {
+        } else if (questionNumber === 4 && userAnswer === ' ') {
             // Correct answer, show final message
             outputDiv.style.display = 'block';
             outputDiv.innerHTML = 'Congratulations!你成功加入事務所';
         } else {
             // Incorrect answer, provide feedback
             outputDiv.style.display = 'block';
-            outputDiv.innerHTML = 'Incorrect answer. Try again.';
+            outputDiv.innerHTML = '答案不正確喔，再想想? ';
         }
     }
 </script>
