@@ -61,13 +61,15 @@
 <script>
     function startQuiz() {
         var welcomePage = document.getElementById('welcome-page');
-        var quizQuestions = document.querySelector('.question');
-        var inputBoxes = document.querySelector('.input-box');
+        var quizQuestions = document.querySelectorAll('.question');
+        var inputBoxes = document.querySelectorAll('.input-box');
 
         // Hide the welcome page and show the first question
         welcomePage.style.display = 'none';
-        quizQuestions.style.display = 'block';
-        inputBoxes.style.display = 'block';
+
+        // Show the first question and its input box
+        quizQuestions[0].style.display = 'block';
+        inputBoxes[0].style.display = 'block';
     }
 
     // ... (Rest of the script remains unchanged)
