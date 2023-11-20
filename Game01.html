@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .quiz-container {
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .input-box {
+            margin-bottom: 20px;
+        }
+        #output {
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div class="question" id="question1">~HELLO~.<br>
+    ~歡迎來到Amber的密室逃脫~<br>
+    輸入'開始遊戲'以進入故事 </div>
+    <div class="input-box">
+        <input type="text" id="answer1" placeholder="Enter your answer">
+        <button onclick="checkAnswer(1)">Submit</button>
+    </div>
+
+    <div class="question" id="question2" style="display: none;">--------------------------.<br>
+    2023年11月15日，PM9:00.<br>
+    月黑風高，這是 安柏偵探事務所 正式營業的前夕<br>
+    <br>
+    你順著104上的邀請來到這裡<br>
+    <br>
+    邀請上說:工程師第一次嘗試架設系統<br>
+    <br>
+    遇到一些問題，急需幫手- - -<br>
+    <br>
+    (輸入:'前往查看')<br>
+    ---------------------------</div>
+    <div class="input-box" style="display: none;">
+        <input type="text" id="answer2" placeholder="Enter your answer">
+        <button onclick="checkAnswer(2)">Submit</button>
+    </div>
+
+    <div class="question" id="question3" style="display: none;">--------------------------.<br>
+    你聞聲走近一看，是一則徵助理啟事：<br>
+    <br>
+    '早八晚十，不供膳宿，月休4天需輪班'<br>
+    <br>
+    '意者內洽，誠徵幫手'<br>
+    <br>
+    (輸入:'我要應徵')<br>
+    ---------------------------</div>
+    <div class="input-box" style="display: none;">
+        <input type="text" id="answer3" placeholder="Enter your answer">
+        <button onclick="checkAnswer(3)">Submit</button>
+    </div>
+
+    <div class="question" id="question3" style="display: none;">--------------------------.<br>
+    你進了事務所，身後的大門竟然立刻反鎖...<br>
+    <br>
+    ｢我可能要被殺掉了...｣你心想。<br>
+    <br>
+    心中話音剛落，面前就落下一面鏡子:<br>
+    <br>
+    ⌈上不怕水，下不怕火；進得廚房，上得了戰場⌋ 鏡上寫道。<br>
+    <br>
+    你傻眼，但來不及吐槽了<br>
+    <br>
+    <br>
+    轉過身看見鏡子後方有一扇門<br>
+    <br>
+    門上有三個字的問答鎖<br>
+    <br>
+    ⌈或許答對就能成功離開這個房間了⌋..<br>
+    <br>
+    好像是一種廚房用品...你的選擇是?<br>
+    (輸入:'_ _ _' 三個字以繼續)<br>
+    ---------------------------</div>
+    <div class="input-box" style="display: none;">
+        <input type="text" id="answer3" placeholder="Enter your answer">
+        <button onclick="checkAnswer(3)">Submit</button>
+    </div>
+
+    <!-- Repeat similar blocks for the remaining questions -->
+
+    <div id="output" style="display: none;"></div>
+</div>
+
+<script>
+    function checkAnswer(questionNumber) {
+        var answerId = 'answer' + questionNumber;
+        var userAnswer = document.getElementById(answerId).value.toLowerCase();
+        var outputDiv = document.getElementById('output');
+
+        if (questionNumber === 1 && userAnswer === '開始遊戲') {
+            // Correct answer, show next question
+            document.getElementById('question2').style.display = 'block';
+            document.getElementById('answer2').parentNode.style.display = 'block';
+            outputDiv.innerHTML = '';
+        } else if (questionNumber === 2 && userAnswer === '前往查看') {
+            // Correct answer, show next question
+            document.getElementById('question3').style.display = 'block';
+            document.getElementById('answer3').parentNode.style.display = 'block';
+            outputDiv.innerHTML = '';
+        } else if (questionNumber === 3 && userAnswer === '我要應徵') {
+            // Correct answer, show next question
+            document.getElementById('question4').style.display = 'block';
+            document.getElementById('answer4').parentNode.style.display = 'block';
+            outputDiv.innerHTML = '';
+        } else if (questionNumber === 4 && userAnswer === '平底鍋') {
+            // Correct answer, show next question
+            document.getElementById('question5').style.display = 'block';
+            document.getElementById('answer5').parentNode.style.display = 'block';
+            outputDiv.innerHTML = '';
+        } else if (questionNumber === 5 && userAnswer === ' ') {
+            // Correct answer, show next question
+            document.getElementById('question6').style.display = 'block';
+            document.getElementById('answer6').parentNode.style.display = 'block';
+            outputDiv.innerHTML = '';
+        } else if (questionNumber === 6 && userAnswer === ' ') {
+            // Correct answer, show final message
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = 'Congratulations!你成功加入事務所';
+        } else {
+            // Incorrect answer, provide feedback
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = 'Incorrect answer. Try again.';
+        }
+    }
+</script>
+
+</body>
+</html>
