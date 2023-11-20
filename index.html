@@ -47,11 +47,22 @@
     <br>
     遇到一些問題，急需幫手- - -<br>
     <br>
-    (輸入'前往查看')<br>
+    (輸入:'前往查看')<br>
     ---------------------------</div>
     <div class="input-box" style="display: none;">
         <input type="text" id="answer2" placeholder="Enter your answer">
         <button onclick="checkAnswer(2)">Submit</button>
+    </div>
+
+    <div class="question" id="question3" style="display: none;">--------------------------.<br>
+    你聞聲走近一看，是一則徵助理啟事：<br>
+    '早八晚十，不供膳宿，月休4天需輪班'<br>
+    '意者內洽，誠徵幫手'<br>
+    (輸入:'我要應徵')<br>
+    ---------------------------</div>
+    <div class="input-box" style="display: none;">
+        <input type="text" id="answer3" placeholder="Enter your answer">
+        <button onclick="checkAnswer(3)">Submit</button>
     </div>
 
     <!-- Repeat similar blocks for the remaining questions -->
@@ -71,9 +82,14 @@
             document.getElementById('answer2').parentNode.style.display = 'block';
             outputDiv.innerHTML = '';
         } else if (questionNumber === 2 && userAnswer === '前往查看') {
+            // Correct answer, show next question
+            document.getElementById('question3').style.display = 'block';
+            document.getElementById('answer3').parentNode.style.display = 'block';
+            outputDiv.innerHTML = '';
+        } else if (questionNumber === 3 && userAnswer === '我要應徵') {
             // Correct answer, show final message
             outputDiv.style.display = 'block';
-            outputDiv.innerHTML = 'Congratulations! You have completed the quiz.';
+            outputDiv.innerHTML = 'Congratulations!你成功加入事務所';
         } else {
             // Incorrect answer, provide feedback
             outputDiv.style.display = 'block';
