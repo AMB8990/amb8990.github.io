@@ -65,32 +65,6 @@
         <button onclick="checkAnswer(3)">Submit</button>
     </div>
 
-    <div class="question" id="question3" style="display: none;">--------------------------.<br>
-    你進了事務所，身後的大門竟然立刻反鎖...<br>
-    <br>
-    ｢我可能要被殺掉了...｣你心想。<br>
-    <br>
-    心中話音剛落，面前就落下一面鏡子:<br>
-    <br>
-    ⌈上不怕水，下不怕火；進得廚房，上得了戰場⌋ 鏡上寫道。<br>
-    <br>
-    你傻眼，但來不及吐槽了<br>
-    <br>
-    <br>
-    轉過身看見鏡子後方有一扇門<br>
-    <br>
-    門上有三個字的問答鎖<br>
-    <br>
-    ⌈或許答對就能成功離開這個房間了⌋..<br>
-    <br>
-    好像是一種廚房用品...你的選擇是?<br>
-    (輸入:'_ _ _' 三個字以繼續)<br>
-    ---------------------------</div>
-    <div class="input-box" style="display: none;">
-        <input type="text" id="answer3" placeholder="Enter your answer">
-        <button onclick="checkAnswer(3)">Submit</button>
-    </div>
-
     <!-- Repeat similar blocks for the remaining questions -->
 
     <div id="output" style="display: none;"></div>
@@ -113,11 +87,6 @@
             document.getElementById('answer3').parentNode.style.display = 'block';
             outputDiv.innerHTML = '';
         } else if (questionNumber === 3 && userAnswer === '我要應徵') {
-            // Correct answer, show next question
-            document.getElementById('question4').style.display = 'block';
-            document.getElementById('answer4').parentNode.style.display = 'block';
-            outputDiv.innerHTML = '';
-        } else if (questionNumber === 4 && userAnswer === ' ') {
             // Correct answer, show final message
             outputDiv.style.display = 'block';
             outputDiv.innerHTML = 'Congratulations!你成功加入事務所';
