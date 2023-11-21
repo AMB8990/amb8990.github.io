@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: justify;
+        }
+        .quiz-container {
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        .question {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        .input-box {
+            margin-bottom: 40px;
+        }
+        #output {
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div class="question" id="question1">
+    ------------------------------<br>
+    HELLO<br>
+    您好請問今天需要加購一個抱抱嗎<br>
+    ------------------------------<br>
+    輸入'我要抱抱'以繼續)</div>
+    <div class="input-box">
+        <input type="text" id="answer1" placeholder="輸入你的答案...">
+        <button onclick="checkAnswer(1)">回答</button>
+    </div>
+
+    <div class="question" id="question2" style="display: none;">
+    --------------------------.<br>
+    感謝您的加購<br>
+    您的大抱抱將會在12.30前為您準備好<br>
+    <br>
+    (輸入:'詢問客服'以獲得更多資訊)<br>
+    ---------------------------</div>
+    <div class="input-box" style="display: none;">
+        <input type="text" id="answer2" placeholder="輸入你的答案...">
+        <button onclick="checkAnswer(2)">回答</button>
+    </div>
+
+    <div class="question" id="question3" style="display: none;">
+    --------------------------.<br>
+    謝謝你的訂購，以下是客服留言：<br>
+    <br>
+    我知道最近你有壓力、不開心<br>
+    <br>
+    但是不用擔心<br>
+    不管事上班的日子、休息的日子<br>
+    <br>
+    都有我在你身邊，跟你一起忙忙碌碌<br>
+    <br>
+    愛你啦:DD<br>
+    ---------------------------<br>    
+    (輸入:'我也愛你')<br>
+    ---------------------------</div>
+    <div class="input-box" style="display: none;">
+        <input type="text" id="answer3" placeholder="輸入你的答案...">
+        <button onclick="checkAnswer(3)">回答</button>
+    </div>
+
+    <!-- Repeat similar blocks for the remaining questions -->
+
+    <div id="output" style="display: none;"></div>
+</div>
+
+<script>
+    function checkAnswer(questionNumber) {
+        var answerId = 'answer' + questionNumber;
+        var userAnswer = document.getElementById(answerId).value.toLowerCase();
+        var outputDiv = document.getElementById('output');
+
+        if (questionNumber === 1 && userAnswer === '我要抱抱') {
+            // Correct answer, show next question
+            document.getElementById('question2').style.display = 'block';
+            document.getElementById('answer2').parentNode.style.display = 'block';
+            outputDiv.innerHTML = '';
+        } else if (questionNumber === 2 && userAnswer === '詢問客服') {
+            // Correct answer, show next question
+            document.getElementById('question3').style.display = 'block';
+            document.getElementById('answer3').parentNode.style.display = 'block';
+            outputDiv.innerHTML = '';
+        } else if (questionNumber === 3 && userAnswer === '我也愛你') {
+            // Correct answer, show final message
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = '您的心意已收到，訂單稍後正在途中，謝謝寶貝';
+        } else {
+            // Incorrect answer, provide feedback
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = '答案不正確窩，再想想? ';
+        }
+    }
+</script>
+
+</body>
+</html>
