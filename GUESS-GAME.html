@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUESS-GAME</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: left;
+        }
+        .quiz-container {
+            max-width: 300px;
+            margin: 100px auto;
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .input-box {
+            margin-bottom:  px;
+        }
+        #output {
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div class="question" id="question1">
+    --------------------------------------------<br>
+    各位親友大家好<br>
+    這是文馨編寫製作的線上程式<br>
+    <br>
+    歡迎一起幫忙測試使用<br>
+    --------------------------------------------<br>
+    請輸入密語以查看詳細內容：<br>
+    </div>
+    <div class="input-box">
+        <input type="text" id="answer1" placeholder="提示請找我拿...">
+        <button onclick="checkAnswer(1)"> 回答 </button>
+    </div>
+
+    <div class="question" id="question2" style="display: none;">
+    --------------------------------------------<br>
+    您好，這是一款線上簡單猜謎遊戲<br>
+    我們先來小試身手一下!<br>
+    <br>
+    第一題：<br>
+    [小白長得真像他的哥哥]<br>
+    <br>
+    --------------------------------------------<br>
+    猜一個成語，請直接輸入：<br>
+    </div>
+    <div class="input-box" style="display: none;">
+        <input type="text" id="answer2" placeholder="直接輸入四字成語...">
+        <button onclick="checkAnswer(2)"> 回答 </button>
+    </div> 
+
+    <div class="question" id="question3" style="display: none;">
+    --------------------------------------------<br>
+    ~恭喜答對，歡迎進入下一題~<br>
+    (原來小白的哥哥..是大白~~)<br>
+    <br>
+    第二題：<br>
+    [13個人捉迷藏，捉了10個還剩幾個?]<br>
+    <br>
+    --------------------------------------------<br>
+    請回答數字即可:[ _ 人]，例如"1"、"2"、"3" <br>
+    </div>
+    <div class="input-box" style="display: none;">
+        <input type="text" id="answer3" placeholder="提示：這樣誰當鬼...">
+        <button onclick="checkAnswer(3)"> 回答 </button>
+    </div> 
+
+    <div class="question" id="question4" style="display: none;">
+    --------------------------------------------<br>
+    ~恭喜答對，歡迎進入下一題~<br>
+    (原來當鬼的就是你...)<br>
+    <br>
+    第三題：<br>
+    [什麼河裡沒有水，什麼世界沒有人]<br>
+    <br>
+    --------------------------------------------<br>
+    猜四個字，請直接輸入:<br>
+    </div>
+    <div class="input-box" style="display: none;">
+        <input type="text" id="answer4" placeholder="提示：改朝換代...">
+        <button onclick="checkAnswer(4)"> 回答 </button>
+    </div> 
+
+    <div class="question" id="question5" style="display: none;">
+    --------------------------------------------<br>
+    ~恭喜答對，歡迎進入下一題~<br>
+    (能過關的象棋高手...)<br>
+    <br>
+    第四題：<br>
+    [小小圓形運動場,三個選手比賽忙]<br>
+    [跑的路程沒長短,但是速度不一樣]<br>
+    <br>
+    --------------------------------------------<br>
+    猜一物品，請直接輸入:<br>
+    </div>
+    <div class="input-box" style="display: none;">
+        <input type="text" id="answer5" placeholder="提示：兩個字...">
+        <button onclick="checkAnswer(5)"> 回答 </button>
+    </div>
+
+    <!-- Repeat similar blocks for the remaining questions -->
+
+    <div id="output" style="display: none;"></div>
+</div>
+
+<script>
+    function checkAnswer(questionNumber) {
+        var answerId = 'answer' + questionNumber;
+        var userAnswer = document.getElementById(answerId).value.toLowerCase();
+        var outputDiv = document.getElementById('output');
+
+        if (questionNumber === 1 && userAnswer === '0528') {
+            // Correct answer, show next question
+            document.getElementById('question2').style.display = 'block';
+            document.getElementById('answer2').parentNode.style.display = 'block';
+            outputDiv.innerHTML = '';
+        } else if (questionNumber === 2 && userAnswer === '真相大白') {
+            // Correct answer, show next question
+            document.getElementById('question3').style.display = 'block';
+            document.getElementById('answer3').parentNode.style.display = 'block';
+            outputDiv.innerHTML = '';
+        } else if (questionNumber === 3 && userAnswer === '2') {
+            // Correct answer, show next question
+            document.getElementById('question4').style.display = 'block';
+            document.getElementById('answer4').parentNode.style.display = 'block';
+            outputDiv.innerHTML = '';
+        } else if (questionNumber === 4 && userAnswer === '楚河漢界') {
+            // Correct answer, show next question
+            document.getElementById('question5').style.display = 'block';
+            document.getElementById('answer5').parentNode.style.display = 'block';
+            outputDiv.innerHTML = '';
+
+        } else if (questionNumber === 5 && userAnswer === '時鐘') {
+            // Correct answer, show final message
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = '<<<全部答對囉>>><br> <br>感謝您的幫忙測試!!<br>~心想事成~<br>~萬事如意~<br>';
+        } else {
+            // Incorrect answer, provide feedback
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = '<<<糟糕>>><br>抱歉，您輸入的回答不正確<br>因此你無法閱讀下一段訊息: ( ';
+        }
+    }
+</script>
+
+</body>
+</html>
