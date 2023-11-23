@@ -6,12 +6,23 @@
     <title>程式測試</title>
     <style>
         body {
-            text-align: center;
             font-family: Arial, sans-serif;
+        }
+        
+        #welcome-screen {
+            text-align: center;
+            
         }
 
         #quiz-container {
             display: none;
+            text-align: left;
+            margin: 50px;
+        }
+        
+        #color-button {
+            float: right;
+            margin-right: 20px;
         }
         
         hr {
@@ -23,39 +34,39 @@
 </head>
 <body>
     <div id="welcome-screen">
-        <img src="welcome_image.jpg" alt="Welcome Image" width="300">
         <hr>
         <h1>這是一個測試From Amber</h1>
         <hr>
+        <img src="EXIT00.jpg" alt="EXIT00.jpg" width="300"><br>
+        <br>
         <label for="nickname">請輸入你的暱稱：</label>
         <input type="text" id="nickname" />
-        <button onclick="startGame()">開始遊戲</button>
+        <button onclick="startGame()"> 進入故事 </button>
     </div>
 
     <div id="quiz-container">
         <div id="question"></div>
-        <label for="answer">輸入答案：</label>
+        <label for="answer"><hr> </label>
         <input type="text" id="answer" />
-        <button onclick="checkAnswer()">提交答案</button>
+        <button onclick="checkAnswer()"> 送出回答 </button>
     </div>
-    <br>
-    <button onclick="changeBackgroundColor()"> [魔幻舞台按鈕，非必要勿按] </button>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <button id="color-button" onclick="changeBackgroundColor()"> [魔幻舞台按鈕，非必要勿按] </button>
     
     <script>
     
         function changeBackgroundColor() {
-        // 获取body元素
-        const body = document.body;
-
-        // 生成一个随机的颜色
-        const randomColor = getRandomColor();
-
-        // 将背景颜色设置为随机颜色
-        body.style.backgroundColor = randomColor;
+            // 獲取bodyㄉ元素
+            const body = document.body;
+            // 跑出一個隨機色
+            const randomColor = getRandomColor();
+            // 將背景指定為隨機色
+            body.style.backgroundColor = randomColor;
+        
         }
 
         function getRandomColor() {
-            // 生成随机的RGB颜色值
+            // 在這裡處理隨機色的色號數值
             const letters = "0123456789ABCDEF";
             let color = "#";
             for (let i = 0; i < 6; i++) {
@@ -63,12 +74,22 @@
             }
             return color;
         }
+        
         let currentQuestion = 0;
         const questions = [
-            { question: "問題1: ...", answers: ["123", "456"] },
-            { question: "問題2: ...", answers: ["789", "000"] },
-            // ... (将其他问题添加在这里)
-            { question: "問題10: ...", answers: ["答案10A", "答案10B"] }
+            { 
+              question: "<hr><img src='https://amb8990.github.io/EXIT01.jpg' width='500'><hr>2023年11月23日 14:00 <br>又是一個平凡的上班日<br>你正盯著螢幕發呆著...", 
+              answers: ["123", "456"] 
+            },
+            { 
+              question: "問題2: ...", 
+              answers: ["789", "000"] 
+            },
+            //(接續問答...)
+            { 
+              question: "問題10: ...", 
+              answers: ["答案10A", "答案10B"] 
+            }
         ];
 
         function startGame() {
@@ -90,9 +111,10 @@
         function showQuestion() {
             const questionContainer = document.getElementById("question");
             const answerInput = document.getElementById("answer");
-
-            questionContainer.textContent = questions[currentQuestion].question;
+            
+            questionContainer.innerHTML = questions[currentQuestion].question;
             answerInput.value = "";
+
 
             // 渲染当前问题
         }
@@ -120,8 +142,9 @@
             const thankYouMessage = document.createElement("h2");
             thankYouMessage.textContent = "感謝你完成遊戲！";
             quizContainer.innerHTML = "";
-            quizContainer.appendChild(thankYouMessage);
+            quizContainer.appendChild(thankYouMessage);            
         }
+       
     </script>
 </body>
 </html>
