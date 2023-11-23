@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程式測試</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        #quiz-container {
+            display: none;
+        }
+        
+        hr {
+           margin: 20px 0;
+           border: none;
+           border-top: 1px solid #000;            
+        }
+    </style>
+</head>
+<body>
+    <div id="welcome-screen">
+        <img src="welcome_image.jpg" alt="Welcome Image" width="500">
+        <hr>
+        <h1>這是一個測試From Amber</h1>
+        <hr>
+        <label for="nickname">請輸入你的暱稱：</label>
+        <input type="text" id="nickname" />
+        <button onclick="startGame()">開始遊戲</button>
+    </div>
+
+    <div id="quiz-container">
+        <div id="question"></div>
+        <label for="answer">輸入答案：</label>
+        <input type="text" id="answer" />
+        <button onclick="checkAnswer()">提交答案</button>
+    </div>
+    <br>
+    <button onclick="changeBackgroundColor()"> [魔幻舞台按鈕，非必要勿按] </button>
+    
+    <script>
+    
+        function changeBackgroundColor() {
+        // 获取body元素
+        const body = document.body;
+
+        // 生成一个随机的颜色
+        const randomColor = getRandomColor();
+
+        // 将背景颜色设置为随机颜色
+        body.style.backgroundColor = randomColor;
+        }
+
+        function getRandomColor() {
+            // 生成随机的RGB颜色值
+            const letters = "0123456789ABCDEF";
+            let color = "#";
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        let currentQuestion = 0;
+        const questions = [
+            { question: "問題1: ...", answers: ["123", "456"] },
+            { question: "問題2: ...", answers: ["789", "000"] },
+            // ... (将其他问题添加在这里)
+            { question: "問題10: ...", answers: ["答案10A", "答案10B"] }
+        ];
+
+        function startGame() {
+            const welcomeScreen = document.getElementById("welcome-screen");
+            const quizContainer = document.getElementById("quiz-container");
+
+            const nickname = document.getElementById("nickname").value;
+            if (nickname.trim() === "") {
+                alert("請輸入你的暱稱");
+                return;
+            }
+
+            welcomeScreen.style.display = "none";
+            quizContainer.style.display = "block";
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const questionContainer = document.getElementById("question");
+            const answerInput = document.getElementById("answer");
+
+            questionContainer.textContent = questions[currentQuestion].question;
+            answerInput.value = "";
+
+            // 渲染当前问题
+        }
+
+        function checkAnswer() {
+            const answerInput = document.getElementById("answer");
+            const userAnswer = answerInput.value.trim().toLowerCase();
+
+            const correctAnswers = questions[currentQuestion].answers.map(answer => answer.toLowerCase());
+
+            if (correctAnswers.includes(userAnswer)) {
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    showQuestion();
+                } else {
+                    endGame();
+                }
+            } else {
+                alert("<<抱歉>> 您輸入的回答不正確...因此無法查閱後續內容 : ( ");
+            }
+        }
+
+        function endGame() {
+            const quizContainer = document.getElementById("quiz-container");
+            const thankYouMessage = document.createElement("h2");
+            thankYouMessage.textContent = "感謝你完成遊戲！";
+            quizContainer.innerHTML = "";
+            quizContainer.appendChild(thankYouMessage);
+        }
+    </script>
+</body>
+</html>
