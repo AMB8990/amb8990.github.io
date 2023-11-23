@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambers_TEST01</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: left;
+        }
+        .quiz-container {
+            max-width: 400px;
+            margin: 100px auto;
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .input-box {
+            margin-bottom: 40px;
+        }
+        #output {
+            font-weight: bold;
+            color: green;
+            margin-top: 40px;
+        }
+        .pagination{
+            max-width: 100px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    
+    <!--歡迎頁-->
+    <div id="welcome-page">
+        <h2>
+        ----------------------------------<br>
+        HELLO<br>
+        Wellcome to Amber's GAME<br>
+        EXITROOM_01 (TEST) <br>
+        ----------------------------------<br>
+        </h2><p>
+        這是一個還在測試的系統<br>
+        測試是否可以依據用戶輸入的回答，<br>
+        [Output你的答案於下一頁的內容之中]<br>
+        -------------<br>
+        請輸入您的暱稱：</p>
+        <div class="input-box">
+            <input type="text" id="nameInput" placeholder="EX:BiBi、Wendy...">
+            <button onclick="startQuiz()">開始遊戲</button>
+        </div>
+    </div>
+
+    <!--問答頁-->
+
+     <div class="question" id="question1" style="display: none;">
+     ------------------------------------------<br>
+     <p id="outputText"></p>
+     (Test01-over)<br>
+     <br>
+     這個系統同時還要測試：<br>
+     [翻頁功能是否正常]<br>
+     <br>
+     ------------------------------------------<br>
+     請依序點擊[繼續查看]：<br>
+        <div class="input-box" style="display: none;">
+           <input type="text" id="answer1" placeholder="在這裡輸入...">
+           <button onclick="checkAnswer(1)"> 回答 </button>
+        </div>
+     </div>
+    <div class="question" id="question2" style="display: none;">
+    --------------------------.<br>
+    如果你能看到這行字<br>
+    那說明這個系統很成功<br>
+    感謝您的測試<br>
+    ---------------------------<br>
+    <br>
+    (點擊繼續查看以閱讀最後一段訊息)
+    </div>
+    <div class="input-box" style="display: none;">
+        <input type="text" id="answer2" placeholder="在這裡輸入...">
+        <button onclick="checkAnswer(2)"> 回答 </button>
+    </div>
+
+    <!-- Repeat similar blocks for the remaining questions -->
+
+    <div id="output" style="display: none;"></div>
+
+    <!-- Pagination -->
+    <div class="pagination" id="pagination" style="display: none;">
+        <button onclick="showNextPage()"> 繼續查看 </button>
+    </div>
+</div>
+
+<script>
+    var currentPage = 1;
+
+    function startQuiz() {
+        var userName = document.getElementById('nameInput').value;
+        var welcomePage = document.getElementById('welcome-page');
+        var quizQuestions = document.querySelectorAll('.question');
+        var inputBoxes = document.querySelectorAll('.input-box');
+        var pagination = document.getElementById('pagination');
+        document.getElementById('outputText').innerText = '早安，' + userName;
+
+        // Hide the welcome page and show the first question
+        welcomePage.style.display = 'none';
+
+        // Show the first question and its input box
+        quizQuestions[0].style.display = 'block';
+        inputBoxes[0].style.display = 'block';
+        pagination.style.display = 'block';
+    }
+
+    function showNextPage() {
+        var quizQuestions = document.querySelectorAll('.question');
+        var inputBoxes = document.querySelectorAll('.input-box');
+
+        // Hide the current question and its input box
+        quizQuestions[currentPage - 1].style.display = 'none';
+        inputBoxes[currentPage - 1].style.display = 'none';
+
+        // Move to the next question
+        currentPage++;
+
+        // If there is a next question, show it and its input box
+        if (currentPage <= quizQuestions.length) {
+            quizQuestions[currentPage - 1].style.display = 'block';
+            inputBoxes[currentPage - 1].style.display = 'block';
+        } else {
+            // If there are no more questions, show the final message
+            showFinalMessage();
+        }
+    }
+
+    function showFinalMessage() {
+        var outputDiv = document.getElementById('output');
+        var pagination = document.getElementById('pagination');
+
+        // Display the final message
+        outputDiv.style.display = 'block';
+        outputDiv.innerHTML = '<<<感謝您的測試>>> <br>後續開發完整遊戲將寄送給您<br> <br>加入工程師的LINE以接收通知 : <br>URL: https://line.me/ti/p/sFpT-Jozgh <br>';
+
+        // Hide the pagination (no more pages)
+        pagination.style.display = 'none';
+    }
+
+    // ... (Rest of the script remains unchanged)
+</script>
+
+</body>
+</html>
