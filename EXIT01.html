@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXIT01小品遊戲-程式測試</title>
+    <title>程式測試</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,7 +27,6 @@
         
         hr {
            margin: 20px 0;
-           width: 100%;
            border: none;
            border-top: 1px solid #000;            
         }
@@ -36,7 +35,7 @@
 <body>
     <div id="welcome-screen">
         <hr>
-        <h1>這是EXIT01_解謎遊戲的程式測試 By Amber</h1>
+        <h1>這是EXIT01_GAME的測試 By Amber</h1>
         <hr>
         <img src="https://amb8990.github.io/EXIT09.jpg" alt="EXIT09.jpg" width="300"><br>
         <br>
@@ -51,8 +50,8 @@
         <input type="text" id="answer" />
         <button onclick="checkAnswer()"> 送出回答 </button>
     </div>
-    <br><br><br><br>
-    <button id="color-button" onclick="changeBackgroundColor()"> <<魔幻舞台按鈕，非必要勿按>></button>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <button id="color-button" onclick="changeBackgroundColor()"> <<魔幻舞台按鈕，非必要勿按>><br>(按了就會回不去) </button>
     
     <script>
     
@@ -67,7 +66,7 @@
         }
 
         function getRandomColor() {
-            // 在這裡處理隨機色的色號數值
+            // 處理隨機色的色號數值
             const letters = "0123456789ABCDEF";
             let color = "#";
             for (let i = 0; i < 6; i++) {
@@ -79,39 +78,39 @@
         let currentQuestion = 0;
         const questions = [
             { 
-              question: "<hr><img src='https://amb8990.github.io/EXIT01.jpg' width='400'><hr>2023年11月24日 11:00 <br>又是一個平凡的上班日<br>你正盯著螢幕發呆著...<br> <br>突然...你收到一封神秘的E-Mail... <br>主旨是：<<一隻貓頭鷹的捎信>>...<br><br>(輸入 : 查看信件)", 
+              question: "<hr><img src='https://amb8990.github.io/EXIT01.jpg' width='500'><hr>2023年11月24日 11:00 <br>又是一個平凡的上班日<br>你正盯著螢幕發呆著...<br> <br>突然...你收到一封神秘的E-Mail... <br>主旨是：<<一隻貓頭鷹的捎信>>...<br><br>(輸入 : 查看信件)", 
               answers: ["查看信件", "0000"] 
             },
             { 
-              question: "<hr><img src='https://amb8990.github.io/EXIT02.jpg' width='400'><hr>看來真的是一封來自貓頭鷹的信...<br><br>[不過，我要怎麼回信給委託人呢?]<br>你心想著。<br><br> 繼續看看貓頭鷹的信<br>有沒有留下電郵地址好了...<br><br>(輸入：繼續查看)", 
+              question: "<hr><img src='https://amb8990.github.io/EXIT02.jpg' width='500'><hr>看來真的是一封來自貓頭鷹的信...<br><br>[不過，我要怎麼回信給委託人呢?]你心想著。<br><br> 繼續看看貓頭鷹有沒有留下電郵地址好了...<br><br>(輸入：繼續查看)", 
               answers: ["繼續查看", "0000"] 
             },
             { 
-              question: "<hr><img src='https://amb8990.github.io/EXIT03.jpg' width='400'><hr>郵件中還附了這樣一項資料，<br>看起來有部分資訊遺失了...<br>不過沒關西，貓頭鷹憑著記憶依稀記得一些數字之間的關系...<br><br>[為甚麼明明記得又不講清楚啊!]<br>[算了，畢竟它只是貓頭鷹。]<br><br>不管了，趕快解開再說吧!<br><br>(輸入EMAIL地址缺少的四個數字：...", 
+              question: "<hr><img src='https://amb8990.github.io/EXIT03.jpg' width='500'><hr>郵件中還附了這樣一項資料，<br>看起來有部分資訊遺失了...<br>不過沒關西，貓頭鷹憑著記憶依稀記得一些數字之間的關系...<br><br>[為甚麼明明記得又不講清楚啊!]<br>[算了，畢竟它只是貓頭鷹。]<br><br>不管了，趕快解開再說吧!<br><br>(輸入EMAIL地址缺少的四個數字：...", 
               answers: ["8990", "0000"] 
             },
             { 
-              question: "<hr><img src='https://amb8990.github.io/EXIT04.jpg' width='400'><hr>[eraser.8990@gmail.com....?]<br>你抱著半信半疑的心情⋯<br>寄出郵件問候委託人...<br><br>不料信一寄出去，<br>馬上身邊的分機電話就應聲響起!!<br>你被電話聲嚇到，氣一個要死<br>心想：[是怎樣 委託人是人是鬼阿 ]<br><br>(輸入：接起電話)", 
+              question: "<hr><img src='https://amb8990.github.io/EXIT04.jpg' width='500'><hr>[eraser.8990@gmail.com....?]<br>你抱著半信半疑的心情寄出郵件問候委託人...<br><br>不料信一寄出去，馬上身邊的分機電話就應聲響起!!<br>你被電話聲嚇到，氣一個要死 心想：[是怎樣 委託人是人是鬼阿 ]<br><br>(輸入：接起電話)", 
               answers: ["接起電話", "0000"] 
             },
             { 
-              question: "<hr><img src='https://amb8990.github.io/EXIT05.jpg' width='400'><hr>[嗡－嗡－嗡－]<br>[嗡.嗡－嗡－]<br>[嗡.嗡－嗡.嗡.]<br><br>你接起電話，一陣奇奇怪怪的嗡嗡聲<br>聽得你耳朵都痛了，正想破口大罵時...電話掛斷了??<br><br>這時你又收到一封來自委託人的郵件，同時附上一封加密的PDF<br>看來要輸入正確解碼密碼...才能閱讀?<br><br>(輸入PDF文件開啟密碼：...)", 
+              question: "<hr><img src='https://amb8990.github.io/EXIT05.jpg' width='500'><hr>[嗡－嗡－嗡－]<br>[嗡.嗡－嗡－]<br>[嗡.嗡－嗡.嗡.]<br><br>你揭起電話，一陣奇奇怪怪的嗡嗡聲<br>聽得你耳朵都痛了，正想破口大罵時...電話掛斷了??<br><br>這時你又收到一封來自委託人的郵件，同時附上一封加密的PDF<br>看來要輸入正確解碼密碼...才能閱讀?<br><br>(輸入PDF文件開啟密碼：...)", 
               answers: ["貓頭鷹", "0000"] 
             },
             { 
-              question: "<hr><img src='https://amb8990.github.io/EXIT06.jpg' width='400'><hr>打開鎖上的信封...附件是一張<br>士林芝山站附近的美食地圖...???<br><br>看來委託人是寄了...<br>他想吃的午餐店家給你呢<br><br>怎麼辦?你要幫他叫午餐嗎?<br>(輸入：好啊 / 不要]", 
-              answers: ["好啊", "好阿", "不要", "0000"] 
+              question: "<hr><img src='https://amb8990.github.io/EXIT06.jpg' width='500'>打開鎖上的信封...附件是一張士林芝山站附近的美食地圖...???<br><br>看來委託人是寄了他想吃的午餐店家給你呢<br><br>怎麼辦?你要幫他叫午餐嗎?<br>(輸入：好啊 / 不要]", 
+              answers: ["好啊", "不要", "0000"] 
             },
             { 
-              question: "<hr><img src='https://amb8990.github.io/EXIT07.jpg' width='400'><hr>[通知通知,新郵件]<br>結果委託人的信件突然又來了...<br><br>搞啥，看來一定要幫他叫午餐欸...<br>阿圖片是剛剛這張嗎?<hr><img src='https://amb8990.github.io/EXIT06.jpg' width='400'><hr>不過...這是甚麼意思呢???<br>我要打去哪一號攤位阿...<br><br>(輸入攤位的四位數字：...)", 
+              question: "<hr><img src='https://amb8990.github.io/EXIT07.jpg' width='500'><hr>[通知通知]：結果委託人的信件突然又來了...<br><br>搞啥，看來一定要幫他叫午餐欸...<br>阿圖片是剛剛這張嗎?<hr><img src='https://amb8990.github.io/EXIT06.jpg' width='500'><hr>不過...這是甚麼意思呢???我要打去哪一號攤位阿...<br><br>(輸入攤位的四位數字：...)", 
               answers: ["5142", "0000"] 
             },
             { 
-              question: "<hr><img src='https://amb8990.github.io/EXIT08.jpg' width='400'><hr>一路破關斬將到這裡...<br>終於要贏來一切的終點了!!<br><br>看看從11:00到現在也花了35分鐘了<br>沒想到公司電話...<br>居然要輸入當前密碼，才能撥出電話??<br><br>真是氣死人了，看看電話上的說明...<br>[輸入當前時針與分針的夾角度數]<br>[方可撥出電話]<br><br>[小事一件]<br>[我花一分鐘整就能解出來...]你心想<br><br>(請依照線索進行計算)<br>(輸入夾角度數 數字即可：...)", 
+              question: "<hr><img src='https://amb8990.github.io/EXIT08.jpg' width='500'><hr>一路破關斬將到這裡...終於要贏來一切的終點了<br>看看從11:00到現在也花了35分鐘了<br>沒想到公司電話居然要輸入當前密碼，才能撥出電話??<br><br>真是氣死人了，我看看電話上的說明...<br>[輸入當前時針與分針的夾角度數，方可撥出電話]<br><br>小事一件...我花一分鐘就能解出來...<br><br>(輸入夾角度數 數字即可：...)", 
               answers: ["228", "132", "0000"] 
             },
             { 
-              question: "<hr><img src='https://amb8990.github.io/EXIT01.jpg' width='400'><hr>終於依照委託人的指示...<br>完成了一切任務!<br>不過你為何要這樣忙呢...<br><br>想著想著<br>老闆便從後方辦公室走了出來...<br>而你有種不祥的預感...<br><br>[感謝你啊 ! 特別幫我叫了便當］<br>[其實委託人就是老闆我哈哈]<br>你傻眼...原來這就是信件說的<br>'不能拒絕委託'的原因所在嗎...<br><br>[不用擔心不用擔心］<br>[會另外給你紅包獎勵的!]<br>[就放在公司樓下的信箱裡!]<br>[自己去拿吧，你應得的~]老闆說道。<br><br>你喜出望外興高采烈地下樓...<br>(輸入：[謝謝老闆] 以下樓領獎)", 
+              question: "<hr><img src='https://amb8990.github.io/EXIT01.jpg' width='500'><hr>終於依照委託人的指示完成了一切任務...<br>不過你為何要這樣忙呢...<br><br>想著想著，老闆便從後方辦公室走了出來...<br>你有種不祥的預感...<br><br>[感謝你啊 ! 特別幫我叫了便當，其實委託人就是我啦哈哈]<br>你傻眼...原來這就是信件不能拒絕委託人的意義所在嗎...<br><br>[不用擔心不用擔心，會另外給你紅包獎勵的]<br>[就放在公司樓下的信箱裡!自己去拿吧，你應得的]<br><br>你喜出望外興高采烈地下樓...<br>(輸入：[謝謝老闆] 以下樓領獎)", 
               answers: ["謝謝老闆", "0000"] 
             }
         ];
@@ -140,7 +139,7 @@
             answerInput.value = "";
 
 
-            // 渲染当前问题
+            // 渲染問題
         }
 
         function checkAnswer() {
