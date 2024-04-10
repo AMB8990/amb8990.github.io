@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!-- saved from url=(0136)file:///D:/Amber%20LEE/%23RD%E7%A0%94%E7%99%BC%E7%B5%84%E5%85%A7%E4%BA%8B%E5%8B%99/CODE/HTML_TEST/AorB%20%E7%B0%A1%E5%8C%9603112024.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A/B NUM</title>
+    <style>
+        /* 基本樣式 */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 30px;
+        }
+        hr {
+            margin: 20px 0;
+            width: 100%;
+            border: none;
+            border-top: 1px solid #000;
+        }
+        #correctAnswer {
+            color: green;
+            font-weight: bold;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <!-- Hello-Screen -->
+    <div id="welcomeScreen" style="display: none;">
+        <hr>
+        <h1>
+            ~ Wellcome to Amber's AABB ~
+        </h1>
+        <hr>
+        <button onclick="startGame()">Start</button>
+    </div>
+
+    <!-- G-Screen -->
+    <div id="gameScreen" style="display: block;">
+        <hr>
+        <h2>Please Key-in 4 Numbers：</h2>
+        <input type="text" id="guessInput" maxlength="4">
+        <hr>
+        <button onclick="checkGuess()">Submit</button>
+        <hr>
+        <button onclick="giveUp()">Giveout</button>
+        <p id="resultHistory"></p>
+        <p id="resultMessage"></p>
+        <p id="correctAnswer" style="display: none;"></p>
+        <button onclick="restartGame()">Restart</button>
+    </div>
+
+    <script>
+        let correctAnswer = generateRandomNumber();
+        let guessHistory = [];
+
+        function generateRandomNumber() {
+            const digits = Array.from({ length: 10 }, (_, i) => i); // array [0, 1, 2, ..., 9]
+            for (let i = 9; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [digits[i], digits[j]] = [digits[j], digits[i]]; 
+            }
+            return digits.slice(0, 4).join(''); 
+        }
+
+        let guessCount = 0; //記錄每局次數
+        let gameResults = []; //記錄每局所需
+
+        function startGame() {
+            guessCount = 0; //開始新遊戲及重置次數
+            correctAnswer = generateRandomNumber(); // 產生新的解答
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
+        }
+
+        function checkGuess() {
+            guessCount++; //每次猜都要次數+1
+            const userGuess = document.getElementById('guessInput').value;
+
+            if (/^\d{4}$/.test(userGuess)) {
+                const result = compareGuess(userGuess, correctAnswer);
+                guessHistory.push({ guess: userGuess, result });
+
+                document.getElementById('resultMessage').innerText = result;
+                document.getElementById('resultHistory').innerHTML = displayGuessHistory();
+
+                if (result === '4A0B') {
+					const successMessage = document.createElement('h2');
+					successMessage.innerText = `Correct ANS：${correctAnswer}~`;
+					successMessage.style.color = 'blue';
+                    document.getElementById('gameScreen').appendChild(successMessage);
+
+                    //History
+                    document.getElementById('resultHistory').innerHTML = displayGuessHistory();
+                    document.getElementById('resultHistory').insertAdjacentHTML('beforeend', `<p>Guess Count: ${guessCount}</p>`);
+
+                    //Save
+                    gameResults.push(guessCount);
+				}
+            } else {
+                alert('4 Numbers, Please：');
+            }
+        }
+
+        function giveUp() {
+            document.getElementById('correctAnswer').innerText = `Correct ANS：${correctAnswer}`;
+            document.getElementById('correctAnswer').style.display = 'block';
+        }
+
+        function compareGuess(userGuess, correctAnswer) {
+            let A = 0;
+            let B = 0;
+
+            for (let i = 0; i < 4; i++) {
+                if (userGuess[i] === correctAnswer.toString()[i]) {
+                    A++;
+                } else if (correctAnswer.toString().includes(userGuess[i])) {
+                    B++;
+                }
+            }
+
+            return `${A}A${B}B`;
+        }
+
+        function displayGuessHistory() {
+            let historyText = '<strong>History List：</strong><br>';
+
+            for (let i = 0; i < guessHistory.length; i++) {
+                historyText += `<span>${i + 1}. ${guessHistory[i].guess} - ${guessHistory[i].result}</span><br>`;
+            }
+
+            return historyText;
+        }
+
+        function restartGame() {
+            guessHistory = []; // Clear ReSetHistory~
+            document.getElementById('resultHistory').innerHTML = ''; // 清空显示猜测历史记录的区域
+            document.getElementById('correctAnswer').style.display = 'none'; // 隐藏正确答案
+            document.getElementById('guessInput').value = ''; // 清空输入框
+            document.getElementById('resultMessage').innerText = ''; // 清空结果信息
+            document.getElementById('welcomeScreen').style.display = 'block'; // 显示欢迎页面
+            document.getElementById('gameScreen').style.display = 'none'; // 隐藏游戏页面
+
+            if (gameResults.length > 0) {
+                document.getElementById('welcomeScreen').innerHTML += `<p>Last Game Guess Count: ${gameResults[gameResults.length - 1]}</p>`;
+            }
+        }
+    </script>
+
+
+
+</body></html>
