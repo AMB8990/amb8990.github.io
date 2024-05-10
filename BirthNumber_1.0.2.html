@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birth Number Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+        }
+		h2 {
+			text-align: center;
+			font-size: 16px;
+		}
+        label {
+            font-weight: bold;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+		#hiddenContent {
+		display: none;
+		}
+		#hiddenContent1 {
+		display: none;
+		}
+		#hiddenContent2 {
+		display: none;
+		}
+		#hiddenContent3 {
+		display: none;
+		}
+		#hiddenContent4 {
+		display: none;
+		}
+		#hiddenContent5 {
+		display: none;
+		}
+		#hiddenContent6 {
+		display: none;
+		}
+		#hiddenContent7 {
+		display: none;
+		}
+		#hiddenContent8 {
+		display: none;
+		}
+		#hiddenContent9 {
+		display: none;
+		}
+		#hiddenContent10 {
+		display: none;
+		}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Birth Number Calculator<br></h1>
+		<h2>**這是Amber李綺陽的**<br>
+			**生命靈數及幸運數字計算小站**</h2>
+        <label for="TxtY">Year:</label>
+        <input type="text" id="TxtY" name="TxtY"><br><br>
+        <label for="TxtM">Month:</label>
+        <input type="text" id="TxtM" name="TxtM"><br><br>
+        <label for="TxtD">Day:</label>
+        <input type="text" id="TxtD" name="TxtD"><br><br>
+        <label for="comboBox1">Zodiac Sign:</label>
+        <select id="comboBox1" name="comboBox1">
+            <option value="Aries">牡羊座</option>
+            <option value="Taurus">金牛座</option>
+            <option value="Gemini">雙子座</option>
+            <option value="Cancer">巨蟹座</option>
+            <option value="Leo">獅子座</option>
+            <option value="Virgo">處女座</option>
+            <option value="Libra">天秤座</option>
+            <option value="Scorpio">天蠍座</option>
+            <option value="Sagittarius">射手座</option>
+            <option value="Capricorn">摩羯座</option>
+            <option value="Aquarius">水瓶座</option>
+            <option value="Pisces">雙魚座</option>
+        </select><br><br>
+        <button class="btn" onclick="calculate()">SUBMIT 送出</button><br><br>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function calculate() {
+            var Y = parseInt(document.getElementById('TxtY').value);
+            var M = parseInt(document.getElementById('TxtM').value);
+            var D = parseInt(document.getElementById('TxtD').value);
+            var GGString = document.getElementById('comboBox1').value;
+            var GG = 0;
+
+            // Zodiac Sign to GG conversion
+            switch (GGString) {
+                case "Gemini":
+                case "Pisces":
+                    GG = 3;
+                    break;
+                case "Aries":
+                case "Capricorn":
+                    GG = 1;
+                    break;
+                case "Taurus":
+                case "Aquarius":
+                    GG = 2;
+                    break;
+                case "Cancer":
+                    GG = 4;
+                    break;
+                case "Leo":
+                    GG = 5;
+                    break;
+                case "Virgo":
+                    GG = 6;
+                    break;
+                case "Libra":
+                case "Scorpio":
+                    GG = 7;
+                    break;
+                case "Sagittarius":
+                    GG = 9;
+                    break;
+                default:
+                    alert("Please select a valid zodiac sign.");
+                    return;
+            }
+
+            // Perform calculation
+            var sumall = Y + M + D;
+            var ALL = sumall;
+            var ALLString = ALL.toString();
+            var LN = parseInt(ALLString[0]) + parseInt(ALLString[1]) + parseInt(ALLString[2]) + parseInt(ALLString[3]);
+            
+			
+			if (LN > 9 )
+			{
+				LN = parseInt(LN.toString()[0])+parseInt(LN.toString()[1]);
+			}
+
+			var BN = M+D;
+			if (M > 9 && D >9) 
+			{
+				BN = parseInt(M.toString()[0])+parseInt(M.toString()[1])+parseInt(D.toString()[0])+parseInt(D.toString()[1]);
+			}
+			else if(M >9 && D <= 9)
+			{
+				BN = parseInt(M.toString()[0])+parseInt(M.toString()[1])+D;
+			}
+			else if(M <=9 && D >9)
+			{
+				BN = M + parseInt(D.toString()[0])+parseInt(D.toString()[1]);
+			}
+			
+			var ALLY = parseInt(Y.toString()[0])+parseInt(Y.toString()[1])+parseInt(Y.toString()[2])+parseInt(Y.toString()[3]);
+			var ALLM = parseInt(M.toString()[0])+parseInt(M.toString()[1]);
+			var ALLD = parseInt(D.toString()[0])+parseInt(D.toString()[1]);
+			if (M <=9)
+			{
+				ALLM = M;
+			}
+			if (D <=9)
+			{
+				ALLD = D;
+			}
+			var ALLGN = ALLY+ALLM+ALLD;
+			
+			if(ALLGN >9)
+			{
+				GN1 = parseInt(ALLGN.toString()[0]);
+				GN2 = parseInt(ALLGN.toString()[1]); 
+			} 
+			else
+			{ 
+				GN1 = 0;
+				GN2 = ALLGN;
+			}
+			
+			//parseInt(M.toString()[0];
+            //var BNString = BN.toString();
+			
+			//var GNString = GN.toString();
+            //var GN1 = parseInt(GNString[0]);
+            //var GN2 = parseInt(GNString[1]);
+
+            // Display results
+            var resultText = "先天數字: " + Y +" "+ M +" "+ D + "<br>";
+            resultText += "命運數字: " + LN + "<br>";
+			resultText += "生日數字: " +BN +"<br>";
+            resultText += "天賦數字: " + GN1 +" & "+GN2+"<br>";
+            resultText += "星座數字: " + GG + "<br>";
+            document.getElementById('result').innerHTML = resultText;
+        }
+		
+	</script>
+		
+		<button onclick="toggleHiddenContent()">數字意涵對照 (點擊查看/收折)</button>
+			<div id="hiddenContent">
+			
+			<p>
+			#由上述計算出的數字查找你的人格特質<br>
+			#數字重複出現，代表此特質越明顯
+			</p>
+			<img src='https://amb8990.github.io/9NUM.png' width='300' alt="隱藏的圖片">
+			<p>
+			數字1給人的印象<br>
+			正面：自我、勇敢、果斷、可被信任<br>
+			負面：偏執、自我、冷酷、忌妒<br>
+			建議：<br>
+			"接納自己的一切，特別要接受你覺得「不好」的部分。"<br>
+			<br>
+			數字2給人的印象<br>
+			正面：耐心、配合度高、有藝術感、可靠<br>
+			負面：易抱怨、無主見、缺乏獨立性<br>
+			建議：<br>
+			"只要你能力夠強大，最終時間會證明你是對的。"<br>
+			<br>
+			數字3給人的印象<br>
+			正面：聰明、熱情、幽默、有創意<br>
+			負面：逃避、缺乏方向、虎頭蛇尾<br>
+			建議：<br>
+			"不用隨旁人的期待去修正，多把關注力放在自己身上。"<br>
+			<br>
+			數字4給人的印象<br>
+			正面：實際、誠懇、預防未來、邏輯分明<br>
+			負面：過於謹慎、拒絕改變、缺乏趣味<br>
+			建議：<br>
+			"一段感情一定要讓你們覺得很踏實、關係穏定。"<br>
+			<br>
+			數字5給人的印象<br>
+			正面：冒險精神、隨遇而安、堅持自我<br>
+			負面：衝動、善變、偏執<br>
+			建議：<br>
+			"你們覺得世上有很多好玩的事，另一半給予空間自由也特別重要。"<br>
+			<br>
+			數字6給人的印象<br>
+			正面：體貼、有同情心、公正、顧家<br>
+			負面：挑剔、保守、得失心重、愛念<br>
+			建議：<br>
+			"遇到用對等且願意主動回應愛情的對象，你便可以安心且主動地付出。"<br>
+			<br>
+			數字7給人的印象<br>
+			正面：藝術氣質、神秘、幸運、有智慧<br>
+			負面：冷漠、孤僻、疑心重<br>
+			建議：<br>
+			"遇到願意耐心聆聽或討論的對象，你便可以在這段愛情中教學相長。"<br>
+			<br>
+			數字8給人的印象<br>
+			正面：能屈能伸、洞察力、創造財富<br>
+			負面：急於成功、操控慾望高、需要權力<br>
+			建議：<br>
+			"其實在你們冷漠的外表下，藏著澎派的情感。"<br>
+			
+			<br>
+			數字9給人的印象<br>
+			正面：熱心、慈悲、浪漫、博愛<br>
+			負面：不懂拒絕、不切實際、懶惰<br>
+			建議：<br>
+			"世界不會因為你的「不願意」有什麼可怕的變化。"<br>
+			
+			<br>
+			
+			</p>
+			</div>
+
+	<script>
+		var isContentHidden = true;
+
+		function toggleHiddenContent() 
+		{
+			var hiddenContent = document.getElementById("hiddenContent");
+			if (isContentHidden) 
+			{
+				hiddenContent.style.display = "block";
+				isContentHidden = false;
+			} 
+			else 
+			{
+				hiddenContent.style.display = "none";
+				isContentHidden = true;
+			}
+		}
+	</script>
+	
+	
+</body>
+</html>
