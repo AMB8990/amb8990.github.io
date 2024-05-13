@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lunch Helper</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #lunch-image {
+            max-width: 300px;
+            max-height: 200px;
+        }
+        #lunch-suggestion, #saved-lunches {
+            display: none;
+        }
+        #save-box {
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div id="welcome-page">
+        <h1>Welcome to Lunch Helper</h1>
+        <p>上班族午餐選擇器－By Amber</p>
+        <button onclick="showLunch()">Start</button>
+    </div>
+    
+    <div id="lunch-suggestion">
+        <h2>How about...</h2>
+        <img id="lunch-image" src="" alt="Lunch Image">
+        <p id="lunch-name"></p>
+        <button onclick="showLunch()">換一個</button>
+        <button id="save-button" onclick="saveLunch()">加入考慮</button>
+    </div>
+
+    <div id="saved-lunches">
+        <h2>已加入考慮的食物</h2>
+        <div id="save-box"></div>
+        <ul id="saved-list"></ul>
+        <button onclick="returnToWelcome()">返回首頁</button>
+    </div>
+
+    <script>
+        const lunches = [
+            { name: "火鍋", image: "https://amb8990.github.io/火鍋.jpg" },
+            { name: "麥當勞", image: "https://amb8990.github.io/麥當勞.jpg" },
+            { name: "健康餐", image: "https://amb8990.github.io/健康餐.jpg" },
+            { name: "小火鍋", image: "https://amb8990.github.io/小火鍋.jpg" },
+            { name: "漢堡", image: "https://amb8990.github.io/漢堡.jpg" },
+            { name: "牛肉麵", image: "https://amb8990.github.io/牛肉麵.jpg" },
+            { name: "便當", image: "https://amb8990.github.io/便當.jpg" },
+            { name: "沙拉", image: "https://amb8990.github.io/沙拉.jpg" },
+            { name: "拉麵", image: "https://amb8990.github.io/拉麵.jpg" },
+            { name: "7-11", image: "https://amb8990.github.io/7-11.jpg" },
+			{ name: "炸醬麵", image: "https://amb8990.github.io/炸醬麵.jpg" },
+			{ name: "HotPot", image: "https://amb8990.github.io/HotPot.jpg" },
+			{ name: "全家", image: "https://amb8990.github.io/全家.jpg" },
+			{ name: "肯德基", image: "https://amb8990.github.io/肯德基.jpg" },
+			{ name: "SUBWAY", image: "https://amb8990.github.io/SUBWAY.jpg" },
+			{ name: "去跟座位左邊的人吃一樣", image: "https://amb8990.github.io/座位左邊.jpg" },
+			{ name: "去跟座位右邊的人吃一樣", image: "https://amb8990.github.io/座位右邊.jpg" },
+			{ name: "韓式飯捲", image: "https://amb8990.github.io/韓式飯捲.jpg" },
+			{ name: "三顧茅廬", image: "https://amb8990.github.io/三顧茅廬.jpg" }
+			
+        ];
+
+        let savedLunches = [];
+
+        function showLunch() {
+            const welcomeDiv = document.getElementById("welcome-page");
+            const suggestionDiv = document.getElementById("lunch-suggestion");
+            welcomeDiv.style.display = "none";
+
+            const randomIndex = Math.floor(Math.random() * lunches.length);
+            const lunch = lunches[randomIndex];
+            document.getElementById("lunch-name").innerText = lunch.name;
+            document.getElementById("lunch-image").src = lunch.image;
+            suggestionDiv.style.display = "block";
+            document.getElementById("save-button").style.display = "inline-block";
+        }
+
+        function saveLunch() {
+            const lunch = document.getElementById("lunch-name").innerText;
+            savedLunches.push(lunch);
+            updateSaveBox();
+            showSavedLunches();
+        }
+
+        function updateSaveBox() {
+            const saveBox = document.getElementById("save-box");
+            saveBox.innerHTML = "<h3>口袋名單:</h3>";
+            const ul = document.createElement("ul");
+            savedLunches.forEach(lunch => {
+                const li = document.createElement("li");
+                li.textContent = lunch;
+                ul.appendChild(li);
+            });
+            saveBox.appendChild(ul);
+        }
+
+        function showSavedLunches() {
+            const savedDiv = document.getElementById("saved-lunches");
+            savedDiv.style.display = "block";
+        }
+
+        function returnToWelcome() {
+            const welcomeDiv = document.getElementById("welcome-page");
+            const savedDiv = document.getElementById("saved-lunches");
+            const suggestionDiv = document.getElementById("lunch-suggestion");
+
+            welcomeDiv.style.display = "block";
+            savedDiv.style.display = "none";
+            suggestionDiv.style.display = "none";
+        }
+    </script>
+</body>
+</html>
