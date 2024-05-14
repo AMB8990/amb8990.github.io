@@ -44,6 +44,14 @@
         <button onclick="returnToWelcome()">返回首頁</button>
     </div>
 
+    <!-- 新增輸入食物的表單 -->
+    <div id="add-food">
+		<p>額外新增 : <br>
+		你公司附近的、或是喜愛的食物</p>
+        <input type="text" id="food-input" placeholder="輸入食物名稱">
+        <button onclick="addFood()">加入</button>
+    </div>
+
     <script>
         const lunches = [
             { name: "火鍋", image: "https://amb8990.github.io/火鍋.jpg" },
@@ -56,17 +64,13 @@
             { name: "沙拉", image: "https://amb8990.github.io/沙拉.jpg" },
             { name: "拉麵", image: "https://amb8990.github.io/拉麵.jpg" },
             { name: "7-11", image: "https://amb8990.github.io/7-11.jpg" },
-			{ name: "炸醬麵", image: "https://amb8990.github.io/炸醬麵.jpg" },
-			{ name: "HotPot", image: "https://amb8990.github.io/HotPot.jpg" },
-			{ name: "全家", image: "https://amb8990.github.io/全家.jpg" },
-			{ name: "肯德基", image: "https://amb8990.github.io/肯德基.jpg" },
-			{ name: "SUBWAY", image: "https://amb8990.github.io/SUBWAY.jpg" },
-			{ name: "去跟座位左邊的人吃一樣", image: "https://amb8990.github.io/座位左邊.jpg" },
-			{ name: "去跟座位右邊的人吃一樣", image: "https://amb8990.github.io/座位右邊.jpg" },
-			{ name: "韓式飯捲", image: "https://amb8990.github.io/韓式飯捲.jpg" },
-			{ name: "義大利麵", image: "https://amb8990.github.io/義大利麵.jpg" },
-			{ name: "三顧茅廬", image: "https://amb8990.github.io/三顧茅廬.jpg" }
-			
+            { name: "炸醬麵", image: "https://amb8990.github.io/炸醬麵.jpg" },
+            { name: "HotPot", image: "https://amb8990.github.io/HotPot.jpg" },
+            { name: "全家", image: "https://amb8990.github.io/全家.jpg" },
+            { name: "肯德基", image: "https://amb8990.github.io/肯德基.jpg" },
+            { name: "SUBWAY", image: "https://amb8990.github.io/SUBWAY.jpg" },
+            { name: "韓式飯捲", image: "https://amb8990.github.io/韓式飯捲.jpg" },
+            { name: "三顧茅廬", image: "https://amb8990.github.io/三顧茅廬.jpg" }
         ];
 
         let savedLunches = [];
@@ -116,6 +120,15 @@
             welcomeDiv.style.display = "block";
             savedDiv.style.display = "none";
             suggestionDiv.style.display = "none";
+        }
+
+        // 新增的函數，用於將使用者輸入的食物加入到清單中
+        function addFood() {
+            const foodInput = document.getElementById("food-input").value.trim();
+            if (foodInput !== "") {
+                lunches.push({ name: foodInput, image: "https://amb8990.github.io/座位左邊.jpg" });
+                document.getElementById("food-input").value = ""; // 清空輸入框
+            }
         }
     </script>
 </body>
