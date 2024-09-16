@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>年齡驗證</title>
+    <script>
+        function checkAge() {
+            var age = document.getElementById("ageInput").value;
+            var message = "";
+
+            if (age >= 18) {
+                message = "歡迎光臨";
+            } else {
+                message = "Sorry, 未滿18歲禁止進入";
+            }
+
+            document.getElementById("message").innerText = message;
+        }
+    </script>
+</head>
+<body>
+    <h1>年齡驗證系統</h1>
+    <label for="ageInput">請輸入您的年齡：</label>
+    <input type="number" id="ageInput" name="ageInput" min="0">
+    <button onclick="checkAge()">提交</button>
+
+    <p id="message"></p>
+</body>
+</html>
