@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lunch Helper</title>
+    <title>Amber's ToolSpace - Dinner Helper</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,8 +24,8 @@
 </head>
 <body>
     <div id="welcome-page">
-        <h1>Welcome to Lunch Helper</h1>
-        <p>上班族午餐選擇器－By Amber</p>
+        <h1>Welcome to Dinner Helper</h1>
+        <p>晚餐選擇器－By Amber</p>
         <button onclick="showLunch()">Start</button>
     </div>
     
@@ -44,29 +44,29 @@
         <button onclick="returnToWelcome()">返回首頁</button>
     </div>
 
-    <!-- 新增輸入食物的表單 -->
-    <div id="add-food">
-		<p>這裡可額外新增 : <br>
-		你公司附近的、或是喜愛的食物</p>
-        <input type="text" id="food-input" placeholder="輸入食物名稱">
-        <button onclick="addFood()">加入</button>
-    </div>
-
     <script>
         const lunches = [
-            { name: "火鍋", image: "https://amb8990.github.io/火鍋.jpg" },
-            { name: "麥當勞", image: "https://amb8990.github.io/麥當勞.jpg" },
-            { name: "健康餐", image: "https://amb8990.github.io/健康餐.jpg" },
-            { name: "小火鍋", image: "https://amb8990.github.io/小火鍋.jpg" },
-            { name: "牛肉麵", image: "https://amb8990.github.io/牛肉麵.jpg" },
-            { name: "便當", image: "https://amb8990.github.io/便當.jpg" },
-            { name: "拉麵", image: "https://amb8990.github.io/拉麵.jpg" },
-            { name: "7-11", image: "https://amb8990.github.io/7-11.jpg" },
-            { name: "炸醬麵", image: "https://amb8990.github.io/炸醬麵.jpg" },
-            { name: "HotPot", image: "https://amb8990.github.io/HotPot.jpg" },
-            { name: "美墨炸機", image: "https://amb8990.github.io/美墨.jpg" },
-            { name: "三攀泰", image: "https://amb8990.github.io/三攀泰.jpg" }, 
-	    { name: "米粉湯", image: "https://amb8990.github.io/米粉湯.jpg" }
+            { name: "火鍋", image: "https://amb8990.github.io/source/img/FOODs/火鍋.jpg" },
+            { name: "麥當勞", image: "https://amb8990.github.io/source/img/FOODs/麥當勞.jpg" },
+            { name: "小火鍋", image: "https://amb8990.github.io/source/img/FOODs/小火鍋.jpg" },
+            { name: "漢堡", image: "https://amb8990.github.io/source/img/FOODs/漢堡.jpg" },
+            { name: "牛肉麵", image: "https://amb8990.github.io/source/img/FOODs/牛肉麵.jpg" },
+            { name: "便當", image: "https://amb8990.github.io/source/img/FOODs/便當.jpg" },
+            { name: "沙拉", image: "https://amb8990.github.io/source/img/FOODs/沙拉.jpg" },
+            { name: "拉麵", image: "https://amb8990.github.io/source/img/FOODs/拉麵.jpg" },
+			{ name: "炸醬麵", image: "https://amb8990.github.io/source/img/FOODs/炸醬麵.jpg" },
+			{ name: "HotPot", image: "https://amb8990.github.io/source/img/FOODs/HotPot.jpg" },
+			{ name: "全家", image: "https://amb8990.github.io/source/img/FOODs/全家.jpg" },
+			{ name: "肯德基", image: "https://amb8990.github.io/source/img/FOODs/肯德基.jpg" },
+			{ name: "SUBWAY", image: "https://amb8990.github.io/source/img/FOODs/SUBWAY.jpg" },
+			{ name: "韓式飯捲", image: "https://amb8990.github.io/source/img/FOODs/韓式飯捲.jpg" },
+			{ name: "義大利麵", image: "https://amb8990.github.io/source/img/FOODs/義大利麵.jpg" },
+			{ name: "鐵板燒", image: "https://amb8990.github.io/source/img/FOODs/鐵板燒.jpg" },
+			{ name: "TGI-FRIDAY", image: "https://amb8990.github.io/source/img/FOODs/TGI-FRIDAY.jpg" },
+			{ name: "炭烤牛排", image: "https://amb8990.github.io/source/img/FOODs/炭烤牛排.jpg" },
+			{ name: "夜市牛排", image: "https://amb8990.github.io/source/img/FOODs/夜市牛排.jpg" },
+			{ name: "三顧茅廬", image: "https://amb8990.github.io/source/img/FOODs/三顧茅廬.jpg" }
+			
         ];
 
         let savedLunches = [];
@@ -116,15 +116,6 @@
             welcomeDiv.style.display = "block";
             savedDiv.style.display = "none";
             suggestionDiv.style.display = "none";
-        }
-
-        // 新增的函數，用於將使用者輸入的食物加入到清單中
-        function addFood() {
-            const foodInput = document.getElementById("food-input").value.trim();
-            if (foodInput !== "") {
-                lunches.push({ name: foodInput, image: "https://amb8990.github.io/座位左邊.jpg" });
-                document.getElementById("food-input").value = ""; // 清空輸入框
-            }
         }
     </script>
 </body>
