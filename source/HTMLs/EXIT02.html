@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amber's Games - EXIT01</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("https://amb8990.github.io/source/img/EXITs/EXIT02_000.png");
+            background-size: 800px 500px;
+            background-repeat: repeat;
+            background-attachment: fixed;
+            background-position: center;
+            /* 讓背景圖透明一點 */
+            background-color: rgba(255, 255, 255, 0.747);
+            background-blend-mode: lighten;
+        }
+
+        #welcome-screen {
+            text-align: center;
+
+        }
+
+        #quiz-container {
+            display: none;
+            text-align: left;
+            margin: 50px;
+        }
+
+        #color-button {
+            float: right;
+            margin-right: 20px;
+        }
+
+        hr {
+            margin: 20px 0;
+            width: 100%;
+            border: none;
+            border-top: 1px solid #000;
+        }
+
+        button {
+            padding: 5px 3px;
+            font-size: 16px;
+            margin-left: 10px;
+            cursor: pointer;
+            background-color: rgb(176, 196, 197);
+        }
+
+        label {
+            font-size: 18px;
+            font-weight: bold;
+            background-color: rgb(176, 196, 197);
+            padding: 3px 6px;
+        }
+
+        input[type="text"] {
+            padding: 5px;
+            font-size: 16px;
+            width: 300px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="welcome-screen">
+        <hr>
+        <h1>EXIT02</h1>
+        <hr>
+        <h2>睽違2年再次弱弱推出解謎網頁，這次會融入一些寓教於樂的小知識喔</h2>
+        <h2>-By Amber</h2>
+        <img src="https://amb8990.github.io/source/img/EXITs/EXIT02_00.png" alt="EXIT02_00.png" width="300"><br>
+        <br>
+        <label for="nickname">請輸入你的暱稱：</label>
+        <input type="text" id="nickname" />
+        <button onclick="startGame()"> 進入故事 </button>
+    </div>
+
+    <div id="quiz-container">
+        <div id="question"></div>
+        <label for="answer">
+            <hr>
+        </label>
+        <input type="text" id="answer" />
+        <button onclick="checkAnswer()"> 送出回答 </button>
+    </div>
+    <br><br><br><br>
+    <button id="color-button" onclick="changeBackgroundColor()">
+        <<魔幻舞台按鈕，非必要勿按>>
+    </button>
+
+    <script>
+
+        function changeBackgroundColor() {
+            // 獲取bodyㄉ元素
+            const body = document.body;
+            // 跑出一個隨機色
+            const randomColor = getRandomColor();
+            // 將背景指定為隨機色
+            body.style.backgroundColor = randomColor;
+
+        }
+
+        function getRandomColor() {
+            // 處理隨機色的色號數值
+            const letters = "0123456789ABCDEF";
+            let color = "#";
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        let currentQuestion = 0;
+        const questions = [
+            {
+                question: "<hr><img src='https://amb8990.github.io/source/img/EXITs/EXIT02_01.jpg' width='400'><hr>2025年09月05日 16:00 <br>又是一個平凡的上班日<br>突然...你又又收到一封神秘的E-Mail...! <br>主旨是：<開始你的冒險吧>.<br><br>你點開後發現竟然要你選擇夥伴開始冒險?? <br>不管了你先選一個吧 <br><br>(輸入你的選擇 : A / B / C)",
+                answers: ["A", "B", "C", "0000"]
+            },
+            {
+                question: "<hr><img src='https://amb8990.github.io/source/img/EXITs/EXIT02_02.jpg' width='400'><hr>「什麼阿怎麼打開來都是空的？」你困惑的說 <br><br>「不好意思阿，忘記說了，早到的人都已經選完了」 - 謎之聲音<br>「遲到的你只剩下這個了...」 - 謎之聲音 <br><br>(輸入：繼續查看)",
+                answers: ["繼續查看", "0000"]
+            },
+            {
+                question: "<hr><img src='https://amb8990.github.io/source/img/EXITs/EXIT02_04.jpg' width='400'><hr> 待更新...<br<br>(輸入：....)",
+                answers: ["1111", "0000"]
+            },
+            {
+                question: "<hr><img src='https://amb8990.github.io/source/img/EXITs/EXIT02_05.jpg' width='400'><hr> 待更新...<br<br>(輸入：....)",
+                answers: ["1111", "0000"]
+            },
+            {
+                question: "<hr><img src='https://amb8990.github.io/source/img/EXITs/EXIT02_06.jpg' width='400'><hr> 待更新...<br<br>(輸入：....)",
+                answers: ["1111", "0000"]
+            },
+            {
+                question: "<hr><img src='https://amb8990.github.io/source/img/EXITs/EXIT02_07.jpg' width='400'><hr> 待更新...<br<br>(輸入：....)",
+                answers: ["1111", "0000"]
+            },
+            {
+                question: "<hr><img src='https://amb8990.github.io/source/img/EXITs/EXIT02_08.jpg' width='400'><hr> 待更新...<br<br>(輸入：....)",
+                answers: ["1111", "0000"]
+            },
+            {
+                question: "<hr><img src='https://amb8990.github.io/source/img/EXITs/EXIT02_09.jpg' width='400'><hr> 待更新...<br<br>(輸入：....)",
+                answers: ["1111", "0000"]
+            },
+            {
+                question: "<hr><img src='https://amb8990.github.io/source/img/EXITs/EXIT02_10.jpg' width='400'><hr> 待更新...<br<br>(輸入：....)",
+                answers: ["1111", "0000"]
+            },
+            {
+                question: "<hr><img src='https://amb8990.github.io/source/img/EXITs/EXIT02_11.jpg' width='400'><hr> 待更新...<br<br>(輸入：....)",
+                answers: ["1111", "0000"]
+            },
+            {
+                question: "<hr><img src='https://amb8990.github.io/source/img/EXITs/EXIT02_12.jpg' width='400'><hr> 待更新...<br<br>(輸入：....)",
+                answers: ["1111", "0000"]
+            },
+            {
+                question: "<hr><img src='https://amb8990.github.io/source/img/EXITs/EXIT02_13.jpg' width='400'><hr> 待更新...<br<br>(輸入：....)",
+                answers: ["1111", "0000"]
+            }
+        ];
+
+        function startGame() {
+            const welcomeScreen = document.getElementById("welcome-screen");
+            const quizContainer = document.getElementById("quiz-container");
+
+            const nickname = document.getElementById("nickname").value;
+            if (nickname.trim() === "") {
+                alert("請輸入你的暱稱");
+                return;
+            }
+
+            welcomeScreen.style.display = "none";
+            quizContainer.style.display = "block";
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const questionContainer = document.getElementById("question");
+            const answerInput = document.getElementById("answer");
+
+            questionContainer.innerHTML = questions[currentQuestion].question;
+            answerInput.value = "";
+
+        }
+
+        function checkAnswer() {
+            const answerInput = document.getElementById("answer");
+            const userAnswer = answerInput.value.trim().toLowerCase();
+
+            const correctAnswers = questions[currentQuestion].answers.map(answer => answer.toLowerCase());
+
+            if (correctAnswers.includes(userAnswer)) {
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    showQuestion();
+                } else {
+                    endGame();
+                }
+            } else {
+                alert("<<抱歉>> 您輸入的回答不正確...因此無法查閱後續內容 : ( ");
+            }
+        }
+
+        function endGame() {
+            const quizContainer = document.getElementById("quiz-container");
+            const thankYouMessage = document.createElement("h2");
+            thankYouMessage.textContent = "感謝你完成遊戲！! (謝謝支持~) ";
+            quizContainer.innerHTML = "";
+            quizContainer.appendChild(thankYouMessage);
+        }
+
+    </script>
+</body>
+
+</html>
