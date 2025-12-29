@@ -6,41 +6,108 @@
     <title>Amber's MagicSpace - Birth Number Calculator</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #FFE5B4, #FFDAB9);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
         }
+        
+        .header {
+            background: linear-gradient(135deg, #FF8C42, #FF7F50);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 0;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header h2 {
+            margin: 10px 0 0 0;
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: normal;
+        }
+        
         .container {
             max-width: 600px;
             margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+            background: linear-gradient(135deg, #FFF8DC, #FFFACD);
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            padding: 30px;
+            border: 2px solid #FFB347;
         }
-        h1 {
-            text-align: center;
+        
+        .form-group {
+            margin-bottom: 20px;
         }
-		h2 {
-			text-align: center;
-			font-size: 16px;
-		}
+        
         label {
             font-weight: bold;
+            color: #8B4513;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
         }
+        
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #FFB347;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: #FF8C42;
+            box-shadow: 0 0 8px rgba(255, 140, 66, 0.3);
+        }
+        
         .btn {
             display: inline-block;
-            padding: 8px 16px;
-            margin-top: 10px;
+            padding: 15px 30px;
+            margin-top: 20px;
             border: none;
-            border-radius: 5px;
-            background-color: #4CAF50;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #FF8C42, #FF7F50);
             color: white;
             text-align: center;
             text-decoration: none;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: bold;
             cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
+        
         .btn:hover {
-            background-color: #45a049;
+            background: linear-gradient(135deg, #FF7F50, #FF6347);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+        
+        #result {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #FF8C42;
+            margin-top: 20px;
+            font-size: 16px;
+            line-height: 1.6;
         }
 		#hiddenContent {
 		display: none;
@@ -78,41 +145,130 @@
     </style>
 </head>
 <body>
+    <div class="header">
+        <h1>Birth Number Calculator</h1>
+        <h2>**這是Amber李綺陽的**<br>**生命靈數及幸運數字計算小站**</h2>
+    </div>
+    
     <div class="container">
-        <h1>Birth Number Calculator<br></h1>
-		<h2>**這是Amber李綺陽的**<br>
-			**生命靈數及幸運數字計算小站**</h2>
-        <label for="TxtY">Year:</label>
-        <input type="text" id="TxtY" name="TxtY"><br><br>
-        <label for="TxtM">Month:</label>
-        <input type="text" id="TxtM" name="TxtM"><br><br>
-        <label for="TxtD">Day:</label>
-        <input type="text" id="TxtD" name="TxtD"><br><br>
-        <label for="comboBox1">12星座:</label>
-        <select id="comboBox1" name="comboBox1">
-            <option value="Aries">牡羊座</option>
-            <option value="Taurus">金牛座</option>
-            <option value="Gemini">雙子座</option>
-            <option value="Cancer">巨蟹座</option>
-            <option value="Leo">獅子座</option>
-            <option value="Virgo">處女座</option>
-            <option value="Libra">天秤座</option>
-            <option value="Scorpio">天蠍座</option>
-            <option value="Sagittarius">射手座</option>
-            <option value="Capricorn">摩羯座</option>
-            <option value="Aquarius">水瓶座</option>
-            <option value="Pisces">雙魚座</option>
-        </select><br><br>
-        <button class="btn" onclick="calculate()">SUBMIT 送出</button><br><br>
-        <p id="result"></p>
+        <div class="form-group">
+            <label for="TxtY">Year 年份:</label>
+            <select id="TxtY" name="TxtY">
+                <option value="">請選擇年份</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="TxtM">Month 月份:</label>
+            <select id="TxtM" name="TxtM">
+                <option value="">請選擇月份</option>
+                <option value="1">1月</option>
+                <option value="2">2月</option>
+                <option value="3">3月</option>
+                <option value="4">4月</option>
+                <option value="5">5月</option>
+                <option value="6">6月</option>
+                <option value="7">7月</option>
+                <option value="8">8月</option>
+                <option value="9">9月</option>
+                <option value="10">10月</option>
+                <option value="11">11月</option>
+                <option value="12">12月</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="TxtD">Day 日期:</label>
+            <select id="TxtD" name="TxtD">
+                <option value="">請選擇日期</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="comboBox1">12星座:</label>
+            <select id="comboBox1" name="comboBox1">
+                <option value="">請選擇星座</option>
+                <option value="Aries">牡羊座 (3/21-4/19)</option>
+                <option value="Taurus">金牛座 (4/20-5/20)</option>
+                <option value="Gemini">雙子座 (5/21-6/21)</option>
+                <option value="Cancer">巨蟹座 (6/22-7/22)</option>
+                <option value="Leo">獅子座 (7/23-8/22)</option>
+                <option value="Virgo">處女座 (8/23-9/22)</option>
+                <option value="Libra">天秤座 (9/23-10/23)</option>
+                <option value="Scorpio">天蠍座 (10/24-11/22)</option>
+                <option value="Sagittarius">射手座 (11/23-12/21)</option>
+                <option value="Capricorn">摩羯座 (12/22-1/19)</option>
+                <option value="Aquarius">水瓶座 (1/20-2/18)</option>
+                <option value="Pisces">雙魚座 (2/19-3/20)</option>
+            </select>
+        </div>
+        
+        <button class="btn" onclick="calculate()">SUBMIT 送出</button>
+        <div id="result"></div>
     </div>
 
     <script>
+        // 動態生成年份選項 (1900-2030)
+        function populateYearOptions() {
+            const yearSelect = document.getElementById('TxtY');
+            const currentYear = new Date().getFullYear();
+            
+            for (let year = 1900; year <= 2030; year++) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year + '年';
+                if (year === currentYear) {
+                    option.selected = true;
+                }
+                yearSelect.appendChild(option);
+            }
+        }
+        
+        // 動態生成日期選項 (根據月份)
+        function populateDayOptions() {
+            const monthSelect = document.getElementById('TxtM');
+            const daySelect = document.getElementById('TxtD');
+            
+            monthSelect.addEventListener('change', function() {
+                const month = parseInt(this.value);
+                daySelect.innerHTML = '<option value="">請選擇日期</option>';
+                
+                if (!month) return;
+                
+                let daysInMonth = 31;
+                if (month === 2) {
+                    daysInMonth = 29; // 簡化處理，統一按29天
+                } else if ([4, 6, 9, 11].includes(month)) {
+                    daysInMonth = 30;
+                }
+                
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const option = document.createElement('option');
+                    option.value = day;
+                    option.textContent = day + '日';
+                    daySelect.appendChild(option);
+                }
+            });
+        }
+        
+        // 頁面載入時初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            populateYearOptions();
+            populateDayOptions();
+        });
+
         function calculate() {
             var Y = parseInt(document.getElementById('TxtY').value);
             var M = parseInt(document.getElementById('TxtM').value);
             var D = parseInt(document.getElementById('TxtD').value);
             var GGString = document.getElementById('comboBox1').value;
+            
+            // 驗證輸入
+            if (!Y || !M || !D || !GGString) {
+                alert("請填寫所有欄位！");
+                return;
+            }
+            
             var GG = 0;
 
             // Zodiac Sign to GG conversion
@@ -208,87 +364,102 @@
             //var GN2 = parseInt(GNString[1]);
 
             // Display results
-            var resultText = "先天數字: " + Y +" "+ M +" "+ D + "<br>";
-            resultText += "命運數字: " + LN + "<br>";
-			resultText += "生日數字: " +BN +"<br>";
-            resultText += "天賦數字: " + GN1 +" & "+GN2+"<br>";
-            resultText += "星座數字: " + GG + "<br>";
+            var resultText = "<h3 style='color: #8B4513; text-align: center;'>🎯 您的生命靈數結果</h3>";
+            resultText += "<div style='background: linear-gradient(135deg, #FFE5B4, #FFDAB9); padding: 15px; border-radius: 8px; margin: 10px 0;'>";
+            resultText += "<strong>先天數字:</strong> " + Y +" / "+ M +" / "+ D + "<br>";
+            resultText += "<strong>🌟 命運數字:</strong> <span style='color: #FF8C42; font-size: 18px; font-weight: bold;'>" + LN + "</span><br>";
+			resultText += "<strong>🎂 生日數字:</strong> <span style='color: #FF7F50; font-size: 18px; font-weight: bold;'>" + BN + "</span><br>";
+            resultText += "<strong>✨ 天賦數字:</strong> <span style='color: #20B2AA; font-size: 18px; font-weight: bold;'>" + GN1 +" & "+GN2+"</span><br>";
+            resultText += "<strong>♈ 星座數字:</strong> <span style='color: #9370DB; font-size: 18px; font-weight: bold;'>" + GG + "</span>";
+            resultText += "</div>";
             document.getElementById('result').innerHTML = resultText;
         }
 		
 	</script>
 		
-		<button onclick="toggleHiddenContent()">數字意涵對照 (點擊查看/收折)</button>
+		<button class="btn" onclick="toggleHiddenContent()" style="background: linear-gradient(135deg, #20B2AA, #48D1CC); margin-top: 30px;">數字意涵對照 (點擊查看/收折)</button>
 			<div id="hiddenContent">
-			
-			<p>
+			<div style="background: rgba(255, 255, 255, 0.9); padding: 25px; border-radius: 15px; margin-top: 15px; border: 2px solid #FFB347;">
+			<h3 style="color: #8B4513; text-align: center;">📊 數字意涵對照表</h3>
+			<p style="text-align: center; color: #8B4513; font-weight: bold;">
 			#由上述計算出的數字查找你的人格特質<br>
 			#數字重複出現，代表此特質越明顯<br>
 			#黃金三數：命運數、生日數、天賦數<br>
             #生命靈數裡你是「幾號人」：看命運數<br>
 			</p>
-			<img src='https://amb8990.github.io/source/img/Others/9NUM.png' width='300' alt="隱藏的圖片">
-			<p>
-			數字1給人的印象<br>
-			正面：自我、勇敢、果斷、可被信任<br>
-			負面：偏執、自我、冷酷、忌妒<br>
-			建議：<br>
-			"接納自己的一切，特別是你覺得「不好」的部分。"<br>
-			<br>
-			數字2給人的印象<br>
-			正面：耐心、配合度高、有藝術感、可靠<br>
-			負面：易抱怨、無主見、缺乏獨立性<br>
-			建議：<br>
-			"當你能力夠強大，最終時間會證明你是對的。"<br>
-			<br>
-			數字3給人的印象<br>
-			正面：聰明、熱情、幽默、有創意<br>
-			負面：逃避、缺乏方向、虎頭蛇尾<br>
-			建議：<br>
-			"不用隨旁人的期待去修正，關注力放在自己身上。"<br>
-			<br>
-			數字4給人的印象<br>
-			正面：實際、誠懇、預防未來、邏輯分明<br>
-			負面：過於謹慎、拒絕改變、缺乏趣味<br>
-			建議：<br>
-			"一段感情一定要讓你們覺得很踏實、關係穏定。"<br>
-			<br>
-			數字5給人的印象<br>
-			正面：冒險精神、隨遇而安、堅持自我<br>
-			負面：衝動、善變、偏執<br>
-			建議：<br>
-			"你們覺得世上有很多好玩的，另一半給予空間也特別重要。"<br>
-			<br>
-			數字6給人的印象<br>
-			正面：體貼、有同情心、公正、顧家<br>
-			負面：挑剔、保守、得失心重、愛念<br>
-			建議：<br>
-			"遇到願意對等並主動回應的人，你便可以安心主動地付出。"<br>
-			<br>
-			數字7給人的印象<br>
-			正面：藝術氣質、神秘、幸運、有智慧<br>
-			負面：冷漠、孤僻、疑心重<br>
-			建議：<br>
-			"遇到願意耐心聆聽或討論的對象，你便可以在這段關係中成長。"<br>
-			<br>
-			數字8給人的印象<br>
-			正面：能屈能伸、洞察力、創造財富<br>
-			負面：急於成功、操控慾望高、需要權力<br>
-			建議：<br>
-			"其實在你們冷漠的外表下，藏著澎派的情感。"<br>
-			
-			<br>
-			數字9給人的印象<br>
-			正面：熱心、慈悲、浪漫、博愛<br>
-			負面：不懂拒絕、不切實際、懶惰<br>
-			建議：<br>
-			"世界不會因為你的「不願意」有什麼可怕的變化。"<br>
-			<br>
-            <br>
-            參考來源：https://www.vogue.com.tw/lifestyle/article/生命靈數-9宮格
-			
-			</p>
+			<div style="text-align: center; margin: 20px 0;">
+				<img src='https://amb8990.github.io/source/img/Others/9NUM.png' width='300' alt="隱藏的圖片" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
 			</div>
+			<div style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 20px;">
+				<div style="background: linear-gradient(135deg, #FFE5B4, #FFDAB9); padding: 15px; border-radius: 10px; border-left: 5px solid #FF6347;">
+					<h4 style="color: #8B4513; margin-top: 0;">🔥 數字1給人的印象</h4>
+					<p style="margin: 0;"><strong>正面:</strong> 自我、勇敢、果斷、可被信任<br>
+					<strong>負面:</strong> 偏執、自我、冷酷、忌妒<br>
+					<strong style="color: #FF8C42;">建議:</strong> "接納自己的一切，特別是你覺得「不好」的部分。"</p>
+				</div>
+				
+				<div style="background: linear-gradient(135deg, #E6E6FA, #F0F8FF); padding: 15px; border-radius: 10px; border-left: 5px solid #4169E1;">
+					<h4 style="color: #8B4513; margin-top: 0;">🤝 數字2給人的印象</h4>
+					<p style="margin: 0;"><strong>正面:</strong> 耐心、配合度高、有藝術感、可靠<br>
+					<strong>負面:</strong> 易抱怨、無主見、缺乏獨立性<br>
+					<strong style="color: #FF8C42;">建議:</strong> "當你能力夠強大，最終時間會證明你是對的。"</p>
+				</div>
+				
+				<div style="background: linear-gradient(135deg, #F0FFFF, #E0FFFF); padding: 15px; border-radius: 10px; border-left: 5px solid #20B2AA;">
+					<h4 style="color: #8B4513; margin-top: 0;">🎨 數字3給人的印象</h4>
+					<p style="margin: 0;"><strong>正面:</strong> 聰明、熱情、幽默、有創意<br>
+					<strong>負面:</strong> 逃避、缺乏方向、虎頭蛇尾<br>
+					<strong style="color: #FF8C42;">建議:</strong> "不用隨旁人的期待去修正，關注力放在自己身上。"</p>
+				</div>
+				
+				<div style="background: linear-gradient(135deg, #F5F5DC, #FFFACD); padding: 15px; border-radius: 10px; border-left: 5px solid #DAA520;">
+					<h4 style="color: #8B4513; margin-top: 0;">🏗️ 數字4給人的印象</h4>
+					<p style="margin: 0;"><strong>正面:</strong> 實際、誠懇、預防未來、邏輯分明<br>
+					<strong>負面:</strong> 過於謹慎、拒絕改變、缺乏趣味<br>
+					<strong style="color: #FF8C42;">建議:</strong> "一段感情一定要讓你們覺得很踏實、關係穏定。"</p>
+				</div>
+				
+				<div style="background: linear-gradient(135deg, #FFF8DC, #FFEBCD); padding: 15px; border-radius: 10px; border-left: 5px solid #FF7F50;">
+					<h4 style="color: #8B4513; margin-top: 0;">🌟 數字5給人的印象</h4>
+					<p style="margin: 0;"><strong>正面:</strong> 冒險精神、隨遇而安、堅持自我<br>
+					<strong>負面:</strong> 衝動、善變、偏執<br>
+					<strong style="color: #FF8C42;">建議:</strong> "你們覺得世上有很多好玩的，另一半給予空間也特別重要。"</p>
+				</div>
+				
+				<div style="background: linear-gradient(135deg, #F0F8FF, #E6E6FA); padding: 15px; border-radius: 10px; border-left: 5px solid #9370DB;">
+					<h4 style="color: #8B4513; margin-top: 0;">💝 數字6給人的印象</h4>
+					<p style="margin: 0;"><strong>正面:</strong> 體貼、有同情心、公正、顧家<br>
+					<strong>負面:</strong> 挑剔、保守、得失心重、愛念<br>
+					<strong style="color: #FF8C42;">建議:</strong> "遇到願意對等並主動回應的人，你便可以安心主動地付出。"</p>
+				</div>
+				
+				<div style="background: linear-gradient(135deg, #F5F5F5, #E8E8E8); padding: 15px; border-radius: 10px; border-left: 5px solid #696969;">
+					<h4 style="color: #8B4513; margin-top: 0;">🔮 數字7給人的印象</h4>
+					<p style="margin: 0;"><strong>正面:</strong> 藝術氣質、神秘、幸運、有智慧<br>
+					<strong>負面:</strong> 冷漠、孤僻、疑心重<br>
+					<strong style="color: #FF8C42;">建議:</strong> "遇到願意耐心聆聽或討論的對象，你便可以在這段關係中成長。"</p>
+				</div>
+				
+				<div style="background: linear-gradient(135deg, #FFE4E1, #FFCCCB); padding: 15px; border-radius: 10px; border-left: 5px solid #DC143C;">
+					<h4 style="color: #8B4513; margin-top: 0;">💰 數字8給人的印象</h4>
+					<p style="margin: 0;"><strong>正面:</strong> 能屈能伸、洞察力、創造財富<br>
+					<strong>負面:</strong> 急於成功、操控慾望高、需要權力<br>
+					<strong style="color: #FF8C42;">建議:</strong> "其實在你們冷漠的外表下，藏著澎湃的情感。"</p>
+				</div>
+				
+				<div style="background: linear-gradient(135deg, #E0FFFF, #B0E0E6); padding: 15px; border-radius: 10px; border-left: 5px solid #00CED1;">
+					<h4 style="color: #8B4513; margin-top: 0;">❤️ 數字9給人的印象</h4>
+					<p style="margin: 0;"><strong>正面:</strong> 熱心、慈悲、浪漫、博愛<br>
+					<strong>負面:</strong> 不懂拒絕、不切實際、懶惰<br>
+					<strong style="color: #FF8C42;">建議:</strong> "世界不會因為你的「不願意」有什麼可怕的變化。"</p>
+				</div>
+			</div>
+			
+			<div style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.7); border-radius: 8px; text-align: center;">
+				<small style="color: #8B4513;">參考來源：<a href="https://www.vogue.com.tw/lifestyle/article/生命靈數-9宮格" style="color: #FF8C42;">https://www.vogue.com.tw/lifestyle/article/生命靈數-9宮格</a></small>
+			</div>
+			</div>
+		</div>
 
 	<script>
 		var isContentHidden = true;
