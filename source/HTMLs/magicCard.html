@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星際塔羅 | 線上占卜</title>
+    <style>
+        :root {
+            --primary-color: #ffd700;
+            --bg-color: #773d1c;
+            --card-back: linear-gradient(135deg, #b86c16, #faae7b);
+            --text-color: #fff;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3 {
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        button {
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 10px 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 50px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background: var(--primary-color);
+            color: var(--bg-color);
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        /* --- 模式選擇 --- */
+        .mode-selection {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .mode-option {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .mode-option:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .mode-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(255, 215, 0, 0.15);
+        }
+
+        .mode-option input {
+            margin-right: 15px;
+            accent-color: var(--primary-color);
+            scale: 1.2;
+        }
+
+        .mode-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+        }
+
+        section {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            /* For phone */
+            padding: 20px;
+            box-sizing: border-box;
+            animation: fadeIn 1s ease-in-out;
+            flex-grow: 1;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        section.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #intro-screen {
+            text-align: center;
+            padding-top: 10vh;
+        }
+
+        .mystic-circle {
+            width: 120px;
+            height: 120px;
+            border: 2px dashed var(--primary-color);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            animation: spin 10s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .name-input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--primary-color);
+            color: #fff;
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 10px;
+            width: 200px;
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        .name-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .deck-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-placeholder {
+            width: 100px;
+            height: 160px;
+            background: var(--card-back);
+            border-radius: 8px;
+            position: absolute;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .spread-area {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tarot-card {
+            background-color: transparent;
+            width: 120px;
+            height: 200px;
+            perspective: 1000px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .tarot-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-back {
+            background: var(--card-back);
+        }
+
+        .card-front {
+            background-color: #2a1b3d;
+            border: 1px solid var(--primary-color);
+            transform: rotateY(180deg);
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        .card-image {
+            font-size: 2.5rem;
+            margin: 10px 0;
+        }
+
+        .meaning-box {
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 5px;
+            padding: 0 10px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            text-align: justify;
+        }
+
+        .tarot-card.flipped+.meaning-box {
+            max-height: 300px;
+            padding: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .rating-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .rating-option {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .rating-option:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .rating-option input {
+            margin-right: 10px;
+            accent-color: var(--primary-color);
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.925);
+            border: 1px solid #f0cca3;
+            color: #201616;
+            border-radius: 5px;
+            box-sizing: border-box;
+            height: 80px;
+            resize: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section id="intro-screen" class="active">
+        <div class="mystic-circle"></div>
+        <h1>安泊的線上塔羅</h1>
+        <div style="margin: 30px 0;">
+            <input type="text" id="nickname" class="name-input" placeholder="朋朋 你的暱稱" maxlength="10">
+        </div>
+
+        <p style="font-size: 0.9rem; opacity: 0.8;">來都來了，不算一下嗎</p>
+        <button onclick="goToModeSelection()">開始</button>
+    </section>
+
+    <section id="mode-screen">
+        <div class="mystic-circle" style="width: 80px; height: 80px; margin-bottom: 20px;"></div>
+        <h2 id="mode-greeting"></h2>
+
+        <div class="mode-selection">
+            <h3 style="margin: 10px 0; font-size: 1.1rem;">選好後開始在心中默念你的問題...</h3>
+            <label class="mode-option" onclick="selectMode(this, 'single')">
+                <input type="radio" name="mode" value="single" checked>
+                <div>
+                    <div><strong>單張模式 🃏</strong></div>
+                    <div class="mode-description">安泊建議: <br>問 Yes/No 類型的問題適合，一針濺血。</div>
+                </div>
+            </label>
+            <label class="mode-option" onclick="selectMode(this, 'three')">
+                <input type="radio" name="mode" value="three">
+                <div>
+                    <div><strong>三張模式 🃏🃏🃏</strong></div>
+                    <div class="mode-description">安泊建議: <br>抽出|過去|現在|未來|，以了解完整脈絡</div>
+                </div>
+            </label>
+            <label class="mode-option" onclick="selectMode(this, 'four')">
+                <input type="radio" name="mode" value="four">
+                <div>
+                    <div><strong>四張模式 🃏🃏🃏🃏</strong></div>
+                    <div class="mode-description">安泊建議: <br>抽出|主要狀況|障礙|建議|結果|，詳細解讀</div>
+                </div>
+            </label>
+        </div>
+        <button onclick="goToDrawing()">開始洗牌</button>
+    </section>
+
+    <section id="drawing-screen">
+        <h2 id="greeting-text"></h2>
+        <div class="deck-container" id="deck-visual"></div>
+        <button id="reveal-btn" style="opacity:0; pointer-events:none;" onclick="showResults()">查看結果</button>
+    </section>
+
+    <section id="result-screen">
+        <p style="font-size: 0.8rem; opacity: 0.7;">點擊卡牌看解讀</p>
+
+        <div class="spread-area" id="cards-container"></div>
+
+        <hr style="width: 100%; border: 0.5px solid #444; margin: 40px 0;">
+
+        <div style="width: 100%;">
+            <h3>本次命盤外送服務:</h3>
+            <form id="feedback-form">
+                <div class="rating-group">
+                    <label class="rating-option" onclick="selectRating(this, '有準有喜歡')">
+                        <input type="radio" name="rating" value="有準有喜歡" required> 有準有喜歡
+                    </label>
+                    <label class="rating-option" onclick="selectRating(this, '再想想ㄟ')">
+                        <input type="radio" name="rating" value="再想想ㄟ"> 再想想ㄟ
+                    </label>
+                    <label class="rating-option" onclick="selectRating(this, '多做幾版玩玩看')">
+                        <input type="radio" name="rating" value="多做幾版玩玩看"> 多做幾版玩玩看
+                    </label>
+                    <label class="rating-option" onclick="selectRating(this, '我不信我只是來支持安泊')">
+                        <input type="radio" name="rating" value="我不信我只是來支持安泊"> 我不信，我只是來支持安泊
+                    </label>
+                </div>
+
+                <textarea name="message" placeholder="選填-跟安泊說的建議" onblur="submitAdditionalMessage()"></textarea>
+                <div style="display: flex; align-items: center; margin-top: 10px;">
+                    <button type="button" onclick="submitFeedback();" style="font-size: 0.9rem; padding: 6px 16px; margin-left: auto;">送出意見</button>
+                    <span id="form-status" style="margin-left:10px; font-size:0.85rem; color:var(--primary-color);"></span>
+                </div>
+                <button type="button" onclick="location.reload()" style="margin-top:20px;">再算一次</button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbwNZH-jR-RQD-GVzpH83Xaq-eiv55FVuFkQqVGDKfaUAWbcOTz3cQPMH6YwxbH6U8QyGg/exec";
+
+        let currentUser = "";
+        let currentMode = "single";
+        let sessionStarted = false;
+        let drawnCards = [];
+
+        const modeLabels = {
+            'single': '單張模式',
+            'three': '三張模式',
+            'four': '四張模式'
+        };
+
+        const cardPositions = {
+            'three': ['過去', '現在', '未來'],
+            'four': ['現狀', '障礙', '建議', '結果']
+        };
+
+        const imgURL = "https://amb8990.github.io/source/img/TarotCards/";
+
+        const tarotDeck = [
+            { name: "愚者-正位", image: `<img src="${imgURL}00.PNG" alt="愚者-正位" style="width:80px;height:auto;">`, mean: "新的開始、冒險、自由、相信直覺。", link: "" },
+            { name: "愚者-逆位", image: `<img src="${imgURL}00.PNG" alt="愚者-逆位" style="width:80px;height:auto;">`, mean: "衝動莽撞、逃避責任、魯莽、迷失方向。", link: "" },
+            { name: "魔術師-正位", image: `<img src="${imgURL}01.PNG" alt="魔術師-正位" style="width:80px;height:auto;">`, mean: "行動力、資源整合、技巧成熟、把想法化為現實。", link: "" },
+            { name: "魔術師-逆位", image: `<img src="${imgURL}01.PNG" alt="魔術師-逆位" style="width:80px;height:auto;">`, mean: "操控欺瞞、能力未到位、分心拖延、用錯方法。", link: "" },
+            { name: "女祭司-正位", image: `<img src="${imgURL}02.PNG" alt="女祭司-正位" style="width:80px;height:auto;">`, mean: "直覺、潛意識、靜觀其變、看見隱藏訊息。", link: "" },
+            { name: "女祭司-逆位", image: `<img src="${imgURL}02.PNG" alt="女祭司-逆位" style="width:80px;height:auto;">`, mean: "不信直覺、資訊不透明、情緒干擾、誤判。", link: "" },
+            { name: "皇后-正位", image: `<img src="${imgURL}03.PNG" alt="皇后-正位" style="width:80px;height:auto;">`, mean: "豐盛、滋養、魅力、溫柔照顧與創造。", link: "" },
+            { name: "皇后-逆位", image: `<img src="${imgURL}03.PNG" alt="皇后-逆位" style="width:80px;height:auto;">`, mean: "匱乏感、過度依賴、情緒化、過度付出。", link: "" },
+            { name: "皇帝-正位", image: `<img src="${imgURL}04.PNG" alt="皇帝-正位" style="width:80px;height:auto;">`, mean: "秩序、穩定、責任、界線與掌控力。", link: "" },
+            { name: "皇帝-逆位", image: `<img src="${imgURL}04.PNG" alt="皇帝-逆位" style="width:80px;height:auto;">`, mean: "專制固執、控制欲、權力失衡、缺乏彈性。", link: "" },
+            { name: "教皇-正位", image: `<img src="${imgURL}05.PNG" alt="教皇-正位" style="width:80px;height:auto;">`, mean: "傳統、制度、學習、導師指引與信念。", link: "" },
+            { name: "教皇-逆位", image: `<img src="${imgURL}05.PNG" alt="教皇-逆位" style="width:80px;height:auto;">`, mean: "反叛框架、教條束縛、盲從權威、價值衝突。", link: "" },
+            { name: "戀人-正位", image: `<img src="${imgURL}06.PNG" alt="戀人-正位" style="width:80px;height:auto;">`, mean: "關係連結、契合、重要選擇、價值一致。", link: "" },
+            { name: "戀人-逆位", image: `<img src="${imgURL}06.PNG" alt="戀人-逆位" style="width:80px;height:auto;">`, mean: "關係失衡、猶豫不決、誘惑干擾、錯誤選擇。", link: "" },
+            { name: "戰車-正位", image: `<img src="${imgURL}07.PNG" alt="戰車-正位" style="width:80px;height:auto;">`, mean: "勝利、意志力、自律、突破阻礙向前。", link: "" },
+            { name: "戰車-逆位", image: `<img src="${imgURL}07.PNG" alt="戰車-逆位" style="width:80px;height:auto;">`, mean: "失控、方向錯、衝太快、內外拉扯。", link: "" },
+            { name: "力量-正位", image: `<img src="${imgURL}08.PNG" alt="力量-正位" style="width:80px;height:auto;">`, mean: "溫柔的力量、勇氣、耐心、自我掌控。", link: "" },
+            { name: "力量-逆位", image: `<img src="${imgURL}08.PNG" alt="力量-逆位" style="width:80px;height:auto;">`, mean: "自信不足、恐懼退縮、情緒失控、被慾望牽引。", link: "" },
+            { name: "隱士-正位", image: `<img src="${imgURL}09.PNG" alt="隱士-正位" style="width:80px;height:auto;">`, mean: "內省、獨處、尋找真相、慢下來想清楚。", link: "" },
+            { name: "隱士-逆位", image: `<img src="${imgURL}09.PNG" alt="隱士-逆位" style="width:80px;height:auto;">`, mean: "孤立封閉、逃避人群、鑽牛角尖、迷惘不前。", link: "" },
+            { name: "命運之輪-正位", image: `<img src="${imgURL}10.PNG" alt="命運之輪-正位" style="width:80px;height:auto;">`, mean: "轉機、循環、命運推動、機會到來。", link: "" },
+            { name: "命運之輪-逆位", image: `<img src="${imgURL}10.PNG" alt="命運之輪-逆位" style="width:80px;height:auto;">`, mean: "停滯卡關、重複模式、錯過時機、抗拒改變。", link: "" },
+            { name: "正義-正位", image: `<img src="${imgURL}11.PNG" alt="正義-正位" style="width:80px;height:auto;">`, mean: "公平、因果、誠實、理性判斷與平衡。", link: "" },
+            { name: "正義-逆位", image: `<img src="${imgURL}11.PNG" alt="正義-逆位" style="width:80px;height:auto;">`, mean: "不公、偏見、推卸責任、誤判與失衡。", link: "" },
+            { name: "倒吊人-正位", image: `<img src="${imgURL}12.PNG" alt="倒吊人-正位" style="width:80px;height:auto;">`, mean: "換角度、暫停、犧牲、等待更好的時機。", link: "" },
+            { name: "倒吊人-逆位", image: `<img src="${imgURL}12.PNG" alt="倒吊人-逆位" style="width:80px;height:auto;">`, mean: "無效等待、拖延、卡住不放、白白犧牲。", link: "" },
+            { name: "死神-正位", image: `<img src="${imgURL}13.PNG" alt="死神-正位" style="width:80px;height:auto;">`, mean: "結束、斷捨離、轉變、重生的契機。", link: "" },
+            { name: "死神-逆位", image: `<img src="${imgURL}13.PNG" alt="死神-逆位" style="width:80px;height:auto;">`, mean: "抗拒改變、拖泥帶水、死撐、轉型受阻。", link: "" },
+            { name: "節制-正位", image: `<img src="${imgURL}14.PNG" alt="節制-正位" style="width:80px;height:auto;">`, mean: "平衡、協調、療癒、循序漸進的整合。", link: "" },
+            { name: "節制-逆位", image: `<img src="${imgURL}14.PNG" alt="節制-逆位" style="width:80px;height:auto;">`, mean: "失衡、過量、急躁、混亂與情緒失序。", link: "" },
+            { name: "惡魔-正位", image: `<img src="${imgURL}15.PNG" alt="惡魔-正位" style="width:80px;height:auto;">`, mean: "覺醒、解套、打破枷鎖、重拾主導權。", link: "" },
+            { name: "惡魔-逆位", image: `<img src="${imgURL}15.PNG" alt="惡魔-逆位" style="width:80px;height:auto;">`, mean: "被束縛、依賴、逃避、無法自拔。", link: "" },
+            { name: "高塔-正位", image: `<img src="${imgURL}16.PNG" alt="高塔-正位" style="width:80px;height:auto;">`, mean: "突變、崩解、真相爆出、推倒重來。", link: "" },
+            { name: "高塔-逆位", image: `<img src="${imgURL}16.PNG" alt="高塔-逆位" style="width:80px;height:auto;">`, mean: "延後爆雷、內部崩壞、硬撐、避免必要改變。", link: "" },
+            { name: "星星-正位", image: `<img src="${imgURL}17.PNG" alt="星星-正位" style="width:80px;height:auto;">`, mean: "希望、靈感、療癒、看見方向。", link: "" },
+            { name: "星星-逆位", image: `<img src="${imgURL}17.PNG" alt="星星-逆位" style="width:80px;height:auto;">`, mean: "失望、信心下滑、目標模糊、療癒緩慢。", link: "" },
+            { name: "月亮-正位", image: `<img src="${imgURL}18.PNG" alt="月亮-正位" style="width:80px;height:auto;">`, mean: "迷霧、直覺夢境、未知、情緒不安。", link: "" },
+            { name: "月亮-逆位", image: `<img src="${imgURL}18.PNG" alt="月亮-逆位" style="width:80px;height:auto;">`, mean: "真相浮現、疑慮解除、看清幻象、回到現實。", link: "" },
+            { name: "太陽-正位", image: `<img src="${imgURL}19.PNG" alt="太陽-正位" style="width:80px;height:auto;">`, mean: "快樂、成功、清晰、正能量與成長。", link: "" },
+            { name: "太陽-逆位", image: `<img src="${imgURL}19.PNG" alt="太陽-逆位" style="width:80px;height:auto;">`, mean: "延遲、短暫陰霾、自信不足、好事被低估。", link: "" },
+            { name: "審判-正位", image: `<img src="${imgURL}20.PNG" alt="審判-正位" style="width:80px;height:auto;">`, mean: "覺醒、召喚、復活、做出關鍵定案。", link: "" },
+            { name: "審判-逆位", image: `<img src="${imgURL}20.PNG" alt="審判-逆位" style="width:80px;height:auto;">`, mean: "自我懷疑、逃避面對、遲遲不決、被過去綁住。", link: "" },
+            { name: "世界-正位", image: `<img src="${imgURL}21.PNG" alt="世界-正位" style="width:80px;height:auto;">`, mean: "完成、圓滿、里程碑、進入新階段。", link: "" },
+            { name: "世界-逆位", image: `<img src="${imgURL}21.PNG" alt="世界-逆位" style="width:80px;height:auto;">`, mean: "未竟之事、收尾不足、卡最後一步、延遲完成。", link: "" },
+            { name: "權杖王牌-正位", image: `<img src="${imgURL}22.PNG" alt="權杖王牌-正位" style="width:80px;height:auto;">`, mean: "熱情點燃、新計畫、新動能、創造力爆發。", link: "" },
+            { name: "權杖王牌-逆位", image: `<img src="${imgURL}22.PNG" alt="權杖王牌-逆位" style="width:80px;height:auto;">`, mean: "動力不足、拖延、三分鐘熱度、能量耗盡。", link: "" },
+            { name: "權杖二-正位", image: `<img src="${imgURL}23.PNG" alt="權杖二-正位" style="width:80px;height:auto;">`, mean: "規劃藍圖、選方向、放眼更大舞台。", link: "" },
+            { name: "權杖二-逆位", image: `<img src="${imgURL}23.PNG" alt="權杖二-逆位" style="width:80px;height:auto;">`, mean: "猶豫不決、怕離開舒適圈、計畫不清。", link: "" },
+            { name: "權杖三-正位", image: `<img src="${imgURL}24.PNG" alt="權杖三-正位" style="width:80px;height:auto;">`, mean: "擴張、合作、成果將到、視野打開。", link: "" },
+            { name: "權杖三-逆位", image: `<img src="${imgURL}24.PNG" alt="權杖三-逆位" style="width:80px;height:auto;">`, mean: "進展延宕、合作不順、資源不到位。", link: "" },
+            { name: "權杖四-正位", image: `<img src="${imgURL}25.PNG" alt="權杖四-正位" style="width:80px;height:auto;">`, mean: "慶祝、穩定、家與歸屬、好消息。", link: "" },
+            { name: "權杖四-逆位", image: `<img src="${imgURL}25.PNG" alt="權杖四-逆位" style="width:80px;height:auto;">`, mean: "不穩定、家務/關係張力、喜事被打斷。", link: "" },
+            { name: "權杖五-正位", image: `<img src="${imgURL}26.PNG" alt="權杖五-正位" style="width:80px;height:auto;">`, mean: "競爭、摩擦、意見碰撞、磨合期。", link: "" },
+            { name: "權杖五-逆位", image: `<img src="${imgURL}26.PNG" alt="權杖五-逆位" style="width:80px;height:auto;">`, mean: "內耗、衝突升級、避免對話、假和平。", link: "" },
+            { name: "權杖六-正位", image: `<img src="${imgURL}27.PNG" alt="權杖六-正位" style="width:80px;height:auto;">`, mean: "勝利、被看見、肯定、好評回來了。", link: "" },
+            { name: "權杖六-逆位", image: `<img src="${imgURL}27.PNG" alt="權杖六-逆位" style="width:80px;height:auto;">`, mean: "成功延遲、過度在意評價、名聲壓力。", link: "" },
+            { name: "權杖七-正位", image: `<img src="${imgURL}28.PNG" alt="權杖七-正位" style="width:80px;height:auto;">`, mean: "堅守立場、捍衛成果、迎戰壓力。", link: "" },
+            { name: "權杖七-逆位", image: `<img src="${imgURL}28.PNG" alt="權杖七-逆位" style="width:80px;height:auto;">`, mean: "退縮、立場不穩、疲憊、容易被壓過。", link: "" },
+            { name: "權杖八-正位", image: `<img src="${imgURL}29.PNG" alt="權杖八-正位" style="width:80px;height:auto;">`, mean: "快速進展、訊息來往、事情加速。", link: "" },
+            { name: "權杖八-逆位", image: `<img src="${imgURL}29.PNG" alt="權杖八-逆位" style="width:80px;height:auto;">`, mean: "延誤、溝通混亂、消息不確定、卡件。", link: "" },
+            { name: "權杖九-正位", image: `<img src="${imgURL}30.PNG" alt="權杖九-正位" style="width:80px;height:auto;">`, mean: "最後防線、累但能撐、保持警覺。", link: "" },
+            { name: "權杖九-逆位", image: `<img src="${imgURL}30.PNG" alt="權杖九-逆位" style="width:80px;height:auto;">`, mean: "過度防備、被過去嚇到、想放棄。", link: "" },
+            { name: "權杖十-正位", image: `<img src="${imgURL}31.PNG" alt="權杖十-正位" style="width:80px;height:auto;">`, mean: "負擔過重、責任壓頂、撐到終點前。", link: "" },
+            { name: "權杖十-逆位", image: `<img src="${imgURL}31.PNG" alt="權杖十-逆位" style="width:80px;height:auto;">`, mean: "扛到崩潰、拒絕分工、放不下而拖累。", link: "" },
+            { name: "權杖侍者-正位", image: `<img src="${imgURL}32.PNG" alt="權杖侍者-正位" style="width:80px;height:auto;">`, mean: "靈感新芽、好奇心、勇於嘗試、熱情訊息。", link: "" },
+            { name: "權杖侍者-逆位", image: `<img src="${imgURL}32.PNG" alt="權杖侍者-逆位" style="width:80px;height:auto;">`, mean: "不成熟、嘴快惹事、虎頭蛇尾、衝動。", link: "" },
+            { name: "權杖騎士-正位", image: `<img src="${imgURL}33.PNG" alt="權杖騎士-正位" style="width:80px;height:auto;">`, mean: "行動派、衝刺、冒險、帶頭推進。", link: "" },
+            { name: "權杖騎士-逆位", image: `<img src="${imgURL}33.PNG" alt="權杖騎士-逆位" style="width:80px;height:auto;">`, mean: "魯莽、急躁、情緒決策、燒光自己。", link: "" },
+            { name: "權杖皇后-正位", image: `<img src="${imgURL}34.PNG" alt="權杖皇后-正位" style="width:80px;height:auto;">`, mean: "自信魅力、熱情感染、領導氣場、果敢。", link: "" },
+            { name: "權杖皇后-逆位", image: `<img src="${imgURL}34.PNG" alt="權杖皇后-逆位" style="width:80px;height:auto;">`, mean: "嫉妒控制、情緒起伏、外強內虛、易爆。", link: "" },
+            { name: "權杖國王-正位", image: `<img src="${imgURL}35.PNG" alt="權杖國王-正位" style="width:80px;height:auto;">`, mean: "遠見領導、果斷決策、熱情與格局。", link: "" },
+            { name: "權杖國王-逆位", image: `<img src="${imgURL}35.PNG" alt="權杖國王-逆位" style="width:80px;height:auto;">`, mean: "霸道專斷、急功近利、脾氣火爆、只想贏。", link: "" },
+
+            { name: "聖杯王牌-正位", image: `<img src="${imgURL}36.PNG" alt="聖杯王牌-正位" style="width:80px;height:auto;">`, mean: "情感新開始、愛與連結、直覺湧現。", link: "" },
+            { name: "聖杯王牌-逆位", image: `<img src="${imgURL}36.PNG" alt="聖杯王牌-逆位" style="width:80px;height:auto;">`, mean: "情緒堵塞、愛意收回、難以表達、心冷。", link: "" },
+            { name: "聖杯二-正位", image: `<img src="${imgURL}37.PNG" alt="聖杯二-正位" style="width:80px;height:auto;">`, mean: "互相欣賞、關係契合、合作與承諾。", link: "" },
+            { name: "聖杯二-逆位", image: `<img src="${imgURL}37.PNG" alt="聖杯二-逆位" style="width:80px;height:auto;">`, mean: "不對等、冷熱落差、誤會、裂痕擴大。", link: "" },
+            { name: "聖杯三-正位", image: `<img src="${imgURL}38.PNG" alt="聖杯三-正位" style="width:80px;height:auto;">`, mean: "慶祝、友情、聚會、好消息分享。", link: "" },
+            { name: "聖杯三-逆位", image: `<img src="${imgURL}38.PNG" alt="聖杯三-逆位" style="width:80px;height:auto;">`, mean: "八卦內耗、三角關係、放縱過頭、社交疲勞。", link: "" },
+            { name: "聖杯四-正位", image: `<img src="${imgURL}39.PNG" alt="聖杯四-正位" style="width:80px;height:auto;">`, mean: "倦怠、提不起勁、需要重新看見機會。", link: "" },
+            { name: "聖杯四-逆位", image: `<img src="${imgURL}39.PNG" alt="聖杯四-逆位" style="width:80px;height:auto;">`, mean: "走出低潮、重新接受、心門打開、回溫。", link: "" },
+            { name: "聖杯五-正位", image: `<img src="${imgURL}40.PNG" alt="聖杯五-正位" style="width:80px;height:auto;">`, mean: "失落、遺憾、只看見失去、沉溺情緒。", link: "" },
+            { name: "聖杯五-逆位", image: `<img src="${imgURL}40.PNG" alt="聖杯五-逆位" style="width:80px;height:auto;">`, mean: "釋懷、復原、看見仍擁有的、重新振作。", link: "" },
+            { name: "聖杯六-正位", image: `<img src="${imgURL}41.PNG" alt="聖杯六-正位" style="width:80px;height:auto;">`, mean: "回憶、純真、舊人舊事、溫柔懷舊。", link: "" },
+            { name: "聖杯六-逆位", image: `<img src="${imgURL}41.PNG" alt="聖杯六-逆位" style="width:80px;height:auto;">`, mean: "放下過去、回到現實、回憶成負擔。", link: "" },
+            { name: "聖杯七-正位", image: `<img src="${imgURL}42.PNG" alt="聖杯七-正位" style="width:80px;height:auto;">`, mean: "選項太多、幻想誘惑、需要辨別真偽。", link: "" },
+            { name: "聖杯七-逆位", image: `<img src="${imgURL}42.PNG" alt="聖杯七-逆位" style="width:80px;height:auto;">`, mean: "看清現實、做出選擇、幻象退散、聚焦。", link: "" },
+            { name: "聖杯八-正位", image: `<img src="${imgURL}43.PNG" alt="聖杯八-正位" style="width:80px;height:auto;">`, mean: "離開不再滿足的、追尋更深的答案。", link: "" },
+            { name: "聖杯八-逆位", image: `<img src="${imgURL}43.PNG" alt="聖杯八-逆位" style="width:80px;height:auto;">`, mean: "不敢走、反覆回頭、逃避面對、停滯。", link: "" },
+            { name: "聖杯九-正位", image: `<img src="${imgURL}44.PNG" alt="聖杯九-正位" style="width:80px;height:auto;">`, mean: "願望達成、滿足感、享受成果、好運。", link: "" },
+            { name: "聖杯九-逆位", image: `<img src="${imgURL}44.PNG" alt="聖杯九-逆位" style="width:80px;height:auto;">`, mean: "貪心不滿、空虛、過度享樂、期望落差。", link: "" },
+            { name: "聖杯十-正位", image: `<img src="${imgURL}45.PNG" alt="聖杯十-正位" style="width:80px;height:auto;">`, mean: "幸福圓滿、關係和諧、情感歸屬。", link: "" },
+            { name: "聖杯十-逆位", image: `<img src="${imgURL}45.PNG" alt="聖杯十-逆位" style="width:80px;height:auto;">`, mean: "表面和樂、內在不合、期待過高、落差。", link: "" },
+            { name: "聖杯侍者-正位", image: `<img src="${imgURL}46.PNG" alt="聖杯侍者-正位" style="width:80px;height:auto;">`, mean: "溫柔邀請、告白訊息、浪漫萌芽、直覺靈感。", link: "" },
+            { name: "聖杯侍者-逆位", image: `<img src="${imgURL}46.PNG" alt="聖杯侍者-逆位" style="width:80px;height:auto;">`, mean: "情緒不成熟、想太多、訊息不穩、玻璃心。", link: "" },
+            { name: "聖杯騎士-正位", image: `<img src="${imgURL}47.PNG" alt="聖杯騎士-正位" style="width:80px;height:auto;">`, mean: "浪漫追求、溫柔行動、邀約、情感表達。", link: "" },
+            { name: "聖杯騎士-逆位", image: `<img src="${imgURL}47.PNG" alt="聖杯騎士-逆位" style="width:80px;height:auto;">`, mean: "空頭支票、曖昧拖、逃避承諾、情緒化。", link: "" },
+            { name: "聖杯皇后-正位", image: `<img src="${imgURL}48.PNG" alt="聖杯皇后-正位" style="width:80px;height:auto;">`, mean: "共感力、療癒、溫柔成熟、情緒智慧。", link: "" },
+            { name: "聖杯皇后-逆位", image: `<img src="${imgURL}48.PNG" alt="聖杯皇后-逆位" style="width:80px;height:auto;">`, mean: "過度敏感、界線模糊、情緒勒索、心累。", link: "" },
+            { name: "聖杯國王-正位", image: `<img src="${imgURL}49.PNG" alt="聖杯國王-正位" style="width:80px;height:auto;">`, mean: "情緒穩定、包容、溫和領導、成熟愛。", link: "" },
+            { name: "聖杯國王-逆位", image: `<img src="${imgURL}49.PNG" alt="聖杯國王-逆位" style="width:80px;height:auto;">`, mean: "冷處理、壓抑、操控情感、喜怒無常。", link: "" },
+
+            { name: "寶劍王牌-正位", image: `<img src="${imgURL}50.PNG" alt="寶劍王牌-正位" style="width:80px;height:auto;">`, mean: "真相揭露、清晰決斷、斬斷混亂、理性勝出。", link: "" },
+            { name: "寶劍王牌-逆位", image: `<img src="${imgURL}50.PNG" alt="寶劍王牌-逆位" style="width:80px;height:auto;">`, mean: "思緒混亂、誤判、口舌是非、資訊錯誤。", link: "" },
+            { name: "寶劍二-正位", image: `<img src="${imgURL}51.PNG" alt="寶劍二-正位" style="width:80px;height:auto;">`, mean: "僵局、兩難、暫時封印情緒、需要決定。", link: "" },
+            { name: "寶劍二-逆位", image: `<img src="${imgURL}51.PNG" alt="寶劍二-逆位" style="width:80px;height:auto;">`, mean: "拖不下去、真相逼近、不得不面對選擇。", link: "" },
+            { name: "寶劍三-正位", image: `<img src="${imgURL}52.PNG" alt="寶劍三-正位" style="width:80px;height:auto;">`, mean: "心碎、失望、真相刺痛、分離或衝擊。", link: "" },
+            { name: "寶劍三-逆位", image: `<img src="${imgURL}52.PNG" alt="寶劍三-逆位" style="width:80px;height:auto;">`, mean: "療傷復原、釋懷、從痛中長出力量。", link: "" },
+            { name: "寶劍四-正位", image: `<img src="${imgURL}53.PNG" alt="寶劍四-正位" style="width:80px;height:auto;">`, mean: "休息修復、暫停、沉澱、養精蓄銳。", link: "" },
+            { name: "寶劍四-逆位", image: `<img src="${imgURL}53.PNG" alt="寶劍四-逆位" style="width:80px;height:auto;">`, mean: "過勞焦慮、停不下來、被迫休息、復原不穩。", link: "" },
+            { name: "寶劍五-正位", image: `<img src="${imgURL}54.PNG" alt="寶劍五-正位" style="width:80px;height:auto;">`, mean: "爭勝、互相傷害、贏了也空虛。", link: "" },
+            { name: "寶劍五-逆位", image: `<img src="${imgURL}54.PNG" alt="寶劍五-逆位" style="width:80px;height:auto;">`, mean: "願意和解、放下面子、避免無謂衝突。", link: "" },
+            { name: "寶劍六-正位", image: `<img src="${imgURL}55.PNG" alt="寶劍六-正位" style="width:80px;height:auto;">`, mean: "過渡期、離開困境、慢慢變好、向前走。", link: "" },
+            { name: "寶劍六-逆位", image: `<img src="${imgURL}55.PNG" alt="寶劍六-逆位" style="width:80px;height:auto;">`, mean: "走不了、反覆回頭、舊問題跟著走。", link: "" },
+            { name: "寶劍七-正位", image: `<img src="${imgURL}56.PNG" alt="寶劍七-正位" style="width:80px;height:auto;">`, mean: "策略、隱瞞、偷偷進行、話留三分。", link: "" },
+            { name: "寶劍七-逆位", image: `<img src="${imgURL}56.PNG" alt="寶劍七-逆位" style="width:80px;height:auto;">`, mean: "謊言被揭、良心不安、需要坦白與補救。", link: "" },
+            { name: "寶劍八-正位", image: `<img src="${imgURL}57.PNG" alt="寶劍八-正位" style="width:80px;height:auto;">`, mean: "自我束縛、恐懼、覺得無路可走。", link: "" },
+            { name: "寶劍八-逆位", image: `<img src="${imgURL}57.PNG" alt="寶劍八-逆位" style="width:80px;height:auto;">`, mean: "解套、重拾掌控、走出心理牢籠。", link: "" },
+            { name: "寶劍九-正位", image: `<img src="${imgURL}58.PNG" alt="寶劍九-正位" style="width:80px;height:auto;">`, mean: "焦慮失眠、擔心放大、內耗折磨。", link: "" },
+            { name: "寶劍九-逆位", image: `<img src="${imgURL}58.PNG" alt="寶劍九-逆位" style="width:80px;height:auto;">`, mean: "壓力下降、開始修復、找到出口與支持。", link: "" },
+            { name: "寶劍十-正位", image: `<img src="${imgURL}59.PNG" alt="寶劍十-正位" style="width:80px;height:auto;">`, mean: "結束到谷底、痛到清醒、告一段落。", link: "" },
+            { name: "寶劍十-逆位", image: `<img src="${imgURL}59.PNG" alt="寶劍十-逆位" style="width:80px;height:auto;">`, mean: "復原期、死裡逃生、慢慢回春與重整。", link: "" },
+            { name: "寶劍侍者-正位", image: `<img src="${imgURL}60.PNG" alt="寶劍侍者-正位" style="width:80px;height:auto;">`, mean: "消息、學習、敏銳觀察、快問快答。", link: "" },
+            { name: "寶劍侍者-逆位", image: `<img src="${imgURL}60.PNG" alt="寶劍侍者-逆位" style="width:80px;height:auto;">`, mean: "口舌是非、刺探過頭、衝動發言、引戰。", link: "" },
+            { name: "寶劍騎士-正位", image: `<img src="${imgURL}61.PNG" alt="寶劍騎士-正位" style="width:80px;height:auto;">`, mean: "直球衝刺、果斷、辯論、速度與野心。", link: "" },
+            { name: "寶劍騎士-逆位", image: `<img src="${imgURL}61.PNG" alt="寶劍騎士-逆位" style="width:80px;height:auto;">`, mean: "魯莽、攻擊性強、說話傷人、硬碰硬。", link: "" },
+            { name: "寶劍皇后-正位", image: `<img src="${imgURL}62.PNG" alt="寶劍皇后-正位" style="width:80px;height:auto;">`, mean: "理性清醒、界線明確、直言、獨立。", link: "" },
+            { name: "寶劍皇后-逆位", image: `<img src="${imgURL}62.PNG" alt="寶劍皇后-逆位" style="width:80px;height:auto;">`, mean: "冷酷刻薄、過度批判、心牆太厚、難親近。", link: "" },
+            { name: "寶劍國王-正位", image: `<img src="${imgURL}63.PNG" alt="寶劍國王-正位" style="width:80px;height:auto;">`, mean: "權威判斷、理性規劃、公正決策。", link: "" },
+            { name: "寶劍國王-逆位", image: `<img src="${imgURL}63.PNG" alt="寶劍國王-逆位" style="width:80px;height:auto;">`, mean: "獨裁冷血、濫用權力、只講道理不講人。", link: "" },
+
+            { name: "金幣王牌-正位", image: `<img src="${imgURL}64.PNG" alt="金幣王牌-正位" style="width:80px;height:auto;">`, mean: "新資源、新工作機會、財務起步、務實成長。", link: "" },
+            { name: "金幣王牌-逆位", image: `<img src="${imgURL}64.PNG" alt="金幣王牌-逆位" style="width:80px;height:auto;">`, mean: "機會流失、理財失誤、計畫不落地、錯估成本。", link: "" },
+            { name: "金幣二-正位", image: `<img src="${imgURL}65.PNG" alt="金幣二-正位" style="width:80px;height:auto;">`, mean: "平衡收支、時間管理、多工調度。", link: "" },
+            { name: "金幣二-逆位", image: `<img src="${imgURL}65.PNG" alt="金幣二-逆位" style="width:80px;height:auto;">`, mean: "失衡混亂、手忙腳亂、財務波動、顧此失彼。", link: "" },
+            { name: "金幣三-正位", image: `<img src="${imgURL}66.PNG" alt="金幣三-正位" style="width:80px;height:auto;">`, mean: "合作專業、技術被看見、團隊成果。", link: "" },
+            { name: "金幣三-逆位", image: `<img src="${imgURL}66.PNG" alt="金幣三-逆位" style="width:80px;height:auto;">`, mean: "溝通不良、品質不一、各做各的、不合拍。", link: "" },
+            { name: "金幣四-正位", image: `<img src="${imgURL}67.PNG" alt="金幣四-正位" style="width:80px;height:auto;">`, mean: "守成、保守理財、安全感、抓緊資源。", link: "" },
+            { name: "金幣四-逆位", image: `<img src="${imgURL}67.PNG" alt="金幣四-逆位" style="width:80px;height:auto;">`, mean: "吝嗇控制、害怕失去、過度執著、該放手。", link: "" },
+            { name: "金幣五-正位", image: `<img src="${imgURL}68.PNG" alt="金幣五-正位" style="width:80px;height:auto;">`, mean: "匱乏低潮、需要求助、孤立感。", link: "" },
+            { name: "金幣五-逆位", image: `<img src="${imgURL}68.PNG" alt="金幣五-逆位" style="width:80px;height:auto;">`, mean: "走出困境、獲得援助、回溫復原。", link: "" },
+            { name: "金幣六-正位", image: `<img src="${imgURL}69.PNG" alt="金幣六-正位" style="width:80px;height:auto;">`, mean: "付出與回饋、資源分享、互惠互利。", link: "" },
+            { name: "金幣六-逆位", image: `<img src="${imgURL}69.PNG" alt="金幣六-逆位" style="width:80px;height:auto;">`, mean: "不公平交易、欠人情、施捨與依賴、失衡。", link: "" },
+            { name: "金幣七-正位", image: `<img src="${imgURL}70.PNG" alt="金幣七-正位" style="width:80px;height:auto;">`, mean: "耐心等待、投資發酵、檢視成果。", link: "" },
+            { name: "金幣七-逆位", image: `<img src="${imgURL}70.PNG" alt="金幣七-逆位" style="width:80px;height:auto;">`, mean: "急功近利、想放棄、回報不如預期。", link: "" },
+            { name: "金幣八-正位", image: `<img src="${imgURL}71.PNG" alt="金幣八-正位" style="width:80px;height:auto;">`, mean: "精進技能、刻苦練功、專注工作。", link: "" },
+            { name: "金幣八-逆位", image: `<img src="${imgURL}71.PNG" alt="金幣八-逆位" style="width:80px;height:auto;">`, mean: "倦怠、品質下滑、只做不想、缺乏熱情。", link: "" },
+            { name: "金幣九-正位", image: `<img src="${imgURL}72.PNG" alt="金幣九-正位" style="width:80px;height:auto;">`, mean: "獨立豐盛、享受成果、物質與心境富足。", link: "" },
+            { name: "金幣九-逆位", image: `<img src="${imgURL}72.PNG" alt="金幣九-逆位" style="width:80px;height:auto;">`, mean: "不安全感、過度在意外在、享受不起來、虛榮壓力。", link: "" },
+            { name: "金幣十-正位", image: `<img src="${imgURL}73.PNG" alt="金幣十-正位" style="width:80px;height:auto;">`, mean: "長期穩定、家族資源、成就累積、傳承。", link: "" },
+            { name: "金幣十-逆位", image: `<img src="${imgURL}73.PNG" alt="金幣十-逆位" style="width:80px;height:auto;">`, mean: "家族/財務糾紛、基礎不穩、短視近利。", link: "" },
+            { name: "金幣侍者-正位", image: `<img src="${imgURL}74.PNG" alt="金幣侍者-正位" style="width:80px;height:auto;">`, mean: "務實學習、新計畫落地、穩健起步。", link: "" },
+            { name: "金幣侍者-逆位", image: `<img src="${imgURL}74.PNG" alt="金幣侍者-逆位" style="width:80px;height:auto;">`, mean: "懶散拖延、不切實際、學而不做、錯過機會。", link: "" },
+            { name: "金幣騎士-正位", image: `<img src="${imgURL}75.PNG" alt="金幣騎士-正位" style="width:80px;height:auto;">`, mean: "踏實可靠、穩健推進、耐心耕耘。", link: "" },
+            { name: "金幣騎士-逆位", image: `<img src="${imgURL}75.PNG" alt="金幣騎士-逆位" style="width:80px;height:auto;">`, mean: "固執保守、停滯、怕改變、做事太慢或擺爛。", link: "" },
+            { name: "金幣皇后-正位", image: `<img src="${imgURL}76.PNG" alt="金幣皇后-正位" style="width:80px;height:auto;">`, mean: "務實照顧、穩定生活、豐盛管理、善於打造安全感。", link: "" },
+            { name: "金幣皇后-逆位", image: `<img src="${imgURL}76.PNG" alt="金幣皇后-逆位" style="width:80px;height:auto;">`, mean: "過度操心、控制欲、享樂過量、忽略內在需求。", link: "" },
+            { name: "金幣國王-正位", image: `<img src="${imgURL}77.PNG" alt="金幣國王-正位" style="width:80px;height:auto;">`, mean: "財務掌控、成功穩固、資源領導、可靠成就。", link: "" },
+            { name: "金幣國王-逆位", image: `<img src="${imgURL}77.PNG" alt="金幣國王-逆位" style="width:80px;height:auto;">`, mean: "貪婪、勢利、冒進投資、用錢/地位壓人。", link: "" }
+        ];
+
+        function selectMode(element, mode) {
+            document.querySelectorAll('.mode-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            currentMode = mode;
+        }
+
+        function switchScreen(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function goToModeSelection() {
+            const input = document.getElementById('nickname');
+            if (!input.value.trim()) {
+                alert("題示: 輸入暱稱以繼續~");
+                return;
+            }
+
+            currentUser = input.value.trim();
+            document.getElementById('mode-greeting').innerText = `${currentUser}，歡迎你~ `;
+
+            switchScreen('mode-screen');
+        }
+
+        async function goToDrawing() {
+            const selectedMode = document.querySelector('input[name="mode"]:checked');
+            if (!selectedMode) {
+                alert("題示: 請選擇一種占卜模式~");
+                return;
+            }
+
+            currentMode = selectedMode.value;
+
+            if (!sessionStarted) {
+                await recordToSheet("start", {});
+                sessionStarted = true;
+            }
+
+            document.getElementById('greeting-text').innerText = `安泊正在準備...請繼續默念你的問題`;
+
+            switchScreen('drawing-screen');
+            const visual = document.getElementById('deck-visual');
+            visual.innerHTML = '';
+
+            const cardCount = currentMode === 'single' ? 1 : (currentMode === 'three' ? 3 : 4);
+
+            for (let i = 0; i < cardCount + 2; i++) {
+                let card = document.createElement('div');
+                card.className = 'card-placeholder';
+                card.style.transform = `rotate(${Math.random() * 15 - 7.5}deg) translate(${Math.random() * 20}px, ${Math.random() * 10}px)`;
+                card.style.zIndex = cardCount + 2 - i;
+                visual.appendChild(card);
+            }
+
+            setTimeout(() => {
+                const btn = document.getElementById('reveal-btn');
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+            }, 2500);
+        }
+
+        async function recordToSheet(type, data) {
+            try {
+                const params = new URLSearchParams();
+                params.append("time", new Date().toLocaleString('zh-TW'));
+                params.append("nickname", currentUser);
+                params.append("mode", modeLabels[currentMode]);
+                
+                if (type === "start") {
+                    params.append("cards", "開始占卜");
+                    params.append("rating", "");
+                    params.append("message", "");
+                } else if (type === "cards_drawn") {
+                    // 記錄抽到的牌
+                    const cardNames = drawnCards.map(card => card.name).join(', ');
+                    params.append("cards", cardNames);
+                    params.append("rating", "");
+                    params.append("message", "抽牌完成");
+                } else if (type === "rating") {
+                    // 將抽到的卡牌名稱記錄下來
+                    const cardNames = drawnCards.map(card => card.name).join(', ');
+                    params.append("cards", cardNames);
+                    params.append("rating", data.rating);
+                    params.append("message", "");
+                } else if (type === "message") {
+                    const cardNames = drawnCards.map(card => card.name).join(', ');
+                    params.append("cards", cardNames);
+                    params.append("rating", "");
+                    params.append("message", data.message);
+                }
+
+                await fetch(GAS_URL + "?" + params.toString(), {
+                    method: "POST",
+                    mode: "no-cors"
+                });
+
+                console.log(`logToSheetOK: ${type}`, data);
+            } catch (error) {
+                console.error("logToSheetError:", error);
+            }
+        }
+
+        async function showResults() {
+            const cardCount = currentMode === 'single' ? 1 : (currentMode === 'three' ? 3 : 4);
+
+            drawnCards = [];
+            const usedIndices = new Set();
+
+            for (let i = 0; i < cardCount; i++) {
+                let randomIndex;
+                do {
+                    randomIndex = Math.floor(Math.random() * tarotDeck.length);
+                } while (usedIndices.has(randomIndex));
+
+                usedIndices.add(randomIndex);
+                drawnCards.push(tarotDeck[randomIndex]);
+            }
+
+            await recordToSheet("cards_drawn", {});
+
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+
+            if (currentMode === 'single') {
+                createSingleCard(container, drawnCards[0]);
+            } else {
+                createMultipleCards(container, drawnCards);
+            }
+
+            switchScreen('result-screen');
+        }
+
+        function createSingleCard(container, cardData) {
+            const wrapper = document.createElement('div');
+            wrapper.style.cssText = 'display: flex; flex-direction: column; align-items: center; width: 120px;';
+
+            const card = document.createElement('div');
+            card.className = 'tarot-card';
+            card.innerHTML = `
+                <div class="card-inner">
+                    <div class="card-back"></div>
+                    <div class="card-front">
+                        <div class="card-image">${cardData.image}</div>
+                        <div class="card-title">${cardData.name}</div>
+                    </div>
+                </div>`;
+
+            const meaning = document.createElement('div');
+            meaning.className = 'meaning-box';
+            meaning.innerText = cardData.mean;
+
+            card.addEventListener('click', function () {
+                this.classList.toggle('flipped');
+                if (this.classList.contains('flipped')) {
+                    meaning.style.maxHeight = '300px';
+                    meaning.style.padding = '10px';
+                    meaning.style.border = '1px solid rgba(255,215,0,0.3)';
+                } else {
+                    meaning.style.maxHeight = '0';
+                    meaning.style.padding = '0 10px';
+                    meaning.style.border = 'none';
+                }
+            });
+
+            wrapper.appendChild(card);
+            wrapper.appendChild(meaning);
+            container.appendChild(wrapper);
+        }
+
+        function createMultipleCards(container, cardsData) {
+            container.style.cssText = 'display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; max-width: 500px; margin: 0 auto;';
+
+            cardsData.forEach((cardData, index) => {
+                const wrapper = document.createElement('div');
+                wrapper.style.cssText = 'display: flex; flex-direction: column; align-items: center; width: 110px; margin-bottom: 20px;';
+
+                if (cardPositions[currentMode]) {
+                    const positionLabel = document.createElement('div');
+                    positionLabel.style.cssText = 'font-size: 0.8rem; color: var(--primary-color); margin-bottom: 8px; text-align: center; font-weight: bold;';
+                    positionLabel.innerText = cardPositions[currentMode][index];
+                    wrapper.appendChild(positionLabel);
+                }
+
+                const card = document.createElement('div');
+                card.className = 'tarot-card';
+                card.style.width = '110px';
+                card.style.height = '180px';
+                card.innerHTML = `
+                    <div class="card-inner">
+                        <div class="card-back"></div>
+                        <div class="card-front">
+                            <div class="card-image" style="font-size: 2rem;">${cardData.image}</div>
+                            <div class="card-title" style="font-size: 0.8rem;">${cardData.name}</div>
+                        </div>
+                    </div>`;
+
+                const meaning = document.createElement('div');
+                meaning.className = 'meaning-box';
+                meaning.style.fontSize = '0.75rem';
+                meaning.innerText = cardData.mean;
+
+                card.addEventListener('click', function () {
+                    this.classList.toggle('flipped');
+                    if (this.classList.contains('flipped')) {
+                        meaning.style.maxHeight = '200px';
+                        meaning.style.padding = '8px';
+                        meaning.style.border = '1px solid rgba(255,215,0,0.3)';
+                    } else {
+                        meaning.style.maxHeight = '0';
+                        meaning.style.padding = '0 8px';
+                        meaning.style.border = 'none';
+                    }
+                });
+
+                wrapper.appendChild(card);
+                wrapper.appendChild(meaning);
+                container.appendChild(wrapper);
+            });
+        }
+
+        async function selectRating(element, rating) {
+            const radio = element.querySelector('input[type="radio"]');
+            radio.checked = true;
+
+            await recordToSheet("rating", { rating: rating });
+
+            document.getElementById('form-status').innerHTML = ``;
+        }
+
+        async function submitAdditionalMessage() {
+            const textarea = document.querySelector('textarea[name="message"]');
+            const message = textarea.value.trim();
+
+            if (message) {
+                await recordToSheet("message", { message: message });
+                document.getElementById('form-status').innerHTML = ``;
+            }
+        }
+
+        async function submitFeedback() {
+            const textarea = document.querySelector('textarea[name="message"]');
+            const message = textarea.value.trim();
+            
+            if (message) {
+                await recordToSheet("message", { message: message });
+            }
+            
+            textarea.value = '';
+            
+            document.getElementById('form-status').innerHTML = `已送出`;
+            
+            setTimeout(() => {
+                document.getElementById('form-status').innerHTML = '';
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(() => {
+                const firstModeOption = document.querySelector('#mode-screen .mode-option');
+                if (firstModeOption) {
+                    firstModeOption.classList.add('selected');
+                }
+            }, 100);
+        });
+    </script>
+</body>
+
+</html>
