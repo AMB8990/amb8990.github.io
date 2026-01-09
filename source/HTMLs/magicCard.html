@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>安泊塔羅 | 線上占卜</title>
+    <title>安泊塔羅 | AI線上占卜</title>
     <style>
         :root {
             --primary-color: #ffd700;
@@ -299,6 +299,43 @@
             resize: none;
             margin-top: 10px;
         }
+
+        /* AI 聊天樣式 */
+        .ai-message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 85%;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #daaf78, #ebb239);
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .ai-message.assistant {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .ai-message.thinking {
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--primary-color);
+            font-style: italic;
+        }
+
+        #ai-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        #ai-send-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(255, 171, 45, 0.3);
+        }
     </style>
 </head>
 
@@ -306,7 +343,7 @@
 
     <section id="intro-screen" class="active">
         <div class="mystic-circle"></div>
-        <h1>安泊的線上塔羅</h1>
+        <h1>安泊的AI線上塔羅</h1>
         <div style="margin: 30px 0;">
             <input type="text" id="nickname" class="name-input" placeholder="朋朋 你的暱稱" maxlength="10">
         </div>
@@ -356,11 +393,12 @@
         <p style="font-size: 0.8rem; opacity: 0.7;">點擊卡牌看解讀</p>
 
         <div class="spread-area" id="cards-container"></div>
+        <button type="button" onclick="openAIChat();" style="font-size: 0.9rem; padding: 6px 16px; margin-left: 10px; background: linear-gradient(45deg, #daaf78 0%, #f5b221 100%); border: none; color: white;">可以點這裡問AI</button>
 
         <hr style="width: 100%; border: 0.5px solid #444; margin: 40px 0;">
-
+    
         <div style="width: 100%;">
-            <h3>本次命盤外送服務:</h3>
+            <h3>給安泊一點意見</h3>
             <form id="feedback-form">
                 <div class="rating-group">
                     <label class="rating-option" onclick="selectRating(this, '有準有喜歡')">
@@ -379,11 +417,30 @@
 
                 <textarea name="message" placeholder="選填-跟安泊說的建議" onblur="submitAdditionalMessage()"></textarea>
                 <div style="display: flex; align-items: center; margin-top: 10px;">
-                    <button type="button" onclick="submitFeedback();" style="font-size: 0.9rem; padding: 6px 16px; margin-left: auto;">送出意見</button>
-                    <span id="form-status" style="margin-left:10px; font-size:0.85rem; color:var(--primary-color);"></span>
                 </div>
-                <button type="button" onclick="location.reload()" style="margin-top:20px;">再算一次</button>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                    <button type="button" onclick="submitFeedback();" style="font-size: 0.9rem; padding: 6px 24px; flex: 1; max-width: 140px;">送出意見</button>
+                    <span id="form-status" style="margin: 0 10px; font-size:0.85rem; color:var(--primary-color); flex: 0 0 auto;"></span>
+                    <button type="button" onclick="location.reload()" style="font-size: 0.9rem; padding: 6px 24px; flex: 1; max-width: 140px;">再算一次</button>
+                </div>
             </form>
+        </div>
+    </section>
+
+    <!-- AI 聊天區域 -->
+    <section id="ai-chat-screen">
+        <div style="width: 100%; max-height: 70vh; overflow-y: auto; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="margin: 0; color: var(--primary-color);">AI來看牌</h3>
+                <button onclick="backToResults()" style="background: transparent; border: 1px solid #666; color: #ccc; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem;">返回</button>
+            </div>
+            <p style="font-size: 0.75rem; color: rgba(255,255,255,0.35);">測試Groq中...有Bug可以回上頁留言給安泊...感謝</p>
+            <div id="ai-chat-messages" style="min-height: 300px; max-height: 400px; overflow-y: auto; padding: 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: rgba(0,0,0,0.2);"></div>
+        </div>
+        
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="text" id="ai-input" placeholder="問問AI有什麼見解..." style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #666; border-radius: 20px; color: white; outline: none;">
+            <button id="ai-send-btn" onclick="sendToAI()" style="background: linear-gradient(45deg, #daaf78 0%, #db9a0c 100%); border: none; color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer;">發送</button>
         </div>
     </section>
 
@@ -643,13 +700,11 @@
                     params.append("rating", "");
                     params.append("message", "");
                 } else if (type === "cards_drawn") {
-                    // 記錄抽到的牌
                     const cardNames = drawnCards.map(card => card.name).join(', ');
                     params.append("cards", cardNames);
                     params.append("rating", "");
                     params.append("message", "抽牌完成");
                 } else if (type === "rating") {
-                    // 將抽到的卡牌名稱記錄下來
                     const cardNames = drawnCards.map(card => card.name).join(', ');
                     params.append("cards", cardNames);
                     params.append("rating", data.rating);
@@ -659,6 +714,11 @@
                     params.append("cards", cardNames);
                     params.append("rating", "");
                     params.append("message", data.message);
+                } else if (type === "ai_question") {
+                    const cardNames = drawnCards.map(card => card.name).join(', ');
+                    params.append("cards", cardNames);
+                    params.append("rating", "");
+                    params.append("message", `[問AI] ${data.message}`);
                 }
 
                 await fetch(GAS_URL + "?" + params.toString(), {
@@ -834,8 +894,156 @@
                 }
             }, 100);
         });
+
+        // AI 聊天功能
+        const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+        //就知道你在找什麼
+        //免費的Key要拿就拿吧，因為安泊懶得寫後端 :DDD
+        const GROQ_API_KEY = "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";
+        
+        const GROQ_MODELS = [
+            "openai/gpt-oss-20b",
+            "llama-3.1-8b-instant",
+            "llama-3.3-70b-versatile",
+        ]
+
+        async function callGroqAPI(messages) {
+            for (const model of GROQ_MODELS) {
+                try {
+                    console.log(`嘗試使用模型: ${model}`);
+                    
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 30000);
+                    
+                    const response = await fetch(GROQ_API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${GROQ_API_KEY}`,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            model: model,
+                            messages: messages,
+                            max_tokens: 1024,
+                            temperature: 0.7
+                        }),
+                        signal: controller.signal
+                    });
+                    
+                    clearTimeout(timeoutId);
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log(`模型 ${model} 成功回應`);
+                        return {
+                            reply: data.choices[0].message.content,
+                            provider: `Groq (${model})`
+                        };
+                    } else {
+                        const errorText = await response.text();
+                        console.log(`模型 ${model} 失敗，狀態碼: ${response.status}`);
+                        console.log(`錯誤詳情: ${errorText}`);
+                        continue;
+                    }
+                    
+                } catch (error) {
+                    console.log(`模型 ${model} 錯誤: ${error.message}`);
+                    continue;
+                }
+            }
+            
+            throw new Error("所有 Groq 模型都無法使用");
+        }
+
+        function openAIChat() {
+            switchScreen('ai-chat-screen');
+            
+            const cardNames = drawnCards.map(card => card.name).join(', ');
+            const cardMeanings = drawnCards.map(card => `${card.name}: ${card.mean}`).join('\n');
+            
+            addMessageToChat('assistant', `白天是AI工程師，晚上是算命師...\n\n你剛剛抽到的牌是：\n${cardNames}\n\n這邊直接請AI回答你...`);
+            
+            // 測試 API 連接
+            console.log('API Key 前10位:', GROQ_API_KEY.substring(0, 10));
+            console.log('API URL:', GROQ_API_URL);
+        }
+
+        function backToResults() {
+            switchScreen('result-screen');
+        }
+
+        function addMessageToChat(role, message) {
+            const chatContainer = document.getElementById('ai-chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `ai-message ${role === 'user' ? 'user-message' : 'assistant'}`;
+            messageDiv.innerHTML = message.replace(/\n/g, '<br>');
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        async function sendToAI() {
+            const input = document.getElementById('ai-input');
+            const sendBtn = document.getElementById('ai-send-btn');
+            const userMessage = input.value.trim();
+            
+            if (!userMessage) return;
+            
+            addMessageToChat('user', userMessage);
+            input.value = '';
+            await recordToSheet("ai_question", { message: userMessage });
+            
+            const thinkingDiv = document.createElement('div');
+            thinkingDiv.className = 'ai-message thinking';
+            thinkingDiv.innerHTML = 'AI 正在思考中...';
+            document.getElementById('ai-chat-messages').appendChild(thinkingDiv);
+            
+            sendBtn.disabled = true;
+            sendBtn.textContent = '發送中...';
+            
+            try {
+                const cardInfo = drawnCards.map(card => `${card.name}: ${card.mean}`).join('\n');
+                const systemPrompt = `你是一位專業的塔羅牌解讀師。用戶剛剛完成了${modeLabels[currentMode]}的占卜，抽到的牌是：
+${cardInfo}
+
+請以溫和、智慧且具有洞察力的語調回應用戶的問題。你的回答應該：
+1. 具有深度和意義，不要回太長
+2. 聯繫用戶抽到的具體牌面
+3. 保持神秘而不失親和力的語調
+5. 用繁體中文回答`;
+
+                //使用新的多模型 API 調用
+                const result = await callGroqAPI([
+                    { role: "system", content: systemPrompt },
+                    { role: "user", content: userMessage }
+                ]);
+                
+                thinkingDiv.remove();
+                
+                const aiReply = `${result.reply}\n\n<small style="opacity: 0.6; font-size: 0.7em;">由 ${result.provider} 提供</small>`;
+                addMessageToChat('assistant', aiReply);
+                
+            } catch (error) {
+                console.error('AI API 錯誤:', error);
+                thinkingDiv.innerHTML = `抱歉，AI 暫時無法回應：${error.message}<br>請稍後再試。`;
+                thinkingDiv.className = 'ai-message assistant';
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.textContent = '發送';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const aiInput = document.getElementById('ai-input');
+            if (aiInput) {
+                aiInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendToAI();
+                    }
+                });
+            }
+        });
     </script>
 </body>
-
 
 </html>
