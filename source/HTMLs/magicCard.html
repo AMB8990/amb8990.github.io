@@ -434,7 +434,7 @@
                 <h3 style="margin: 0; color: var(--primary-color);">AI來看牌</h3>
                 <button onclick="backToResults()" style="background: transparent; border: 1px solid #666; color: #ccc; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem;">返回</button>
             </div>
-            <p style="font-size: 0.75rem; color: rgba(255,255,255,0.35);">測試Groq中...有Bug可以回上頁留言給安泊...感謝</p>
+            <!-- <p style="font-size: 0.75rem; color: rgba(255,255,255,0.35);">有Bug可以回上頁留言給安泊...感謝</p> -->
             <div id="ai-chat-messages" style="min-height: 300px; max-height: 400px; overflow-y: auto; padding: 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: rgba(0,0,0,0.2);"></div>
         </div>
         
@@ -442,6 +442,7 @@
             <input type="text" id="ai-input" placeholder="問問AI有什麼見解..." style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #666; border-radius: 20px; color: white; outline: none;">
             <button id="ai-send-btn" onclick="sendToAI()" style="background: linear-gradient(45deg, #daaf78 0%, #db9a0c 100%); border: none; color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer;">發送</button>
         </div>
+        <div style="font-size: 0.75rem; color: rgba(255,255,255,0.35); margin-top: 10px;">AI回答可能會出錯或幻覺，僅供參考。</div>
     </section>
 
     <script>
@@ -897,9 +898,11 @@
 
         // AI 聊天功能
         const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+         const MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions";
         //就知道你在找什麼
-        //免費的Key要拿就拿吧，因為安泊懶得寫後端 :DDD
-        const GROQ_API_KEY = "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";
+        //只是免費的Key要拿就拿吧，因為安泊懶得寫後端 :DDD
+        const GROQ_API_KEY = "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";
+        const MISTRAL_API_KEY = "cOxEi2bMTh15YetsbIjUXBawhndKsi6T"; 
         
         const GROQ_MODELS = [
             "openai/gpt-oss-20b",
@@ -955,17 +958,79 @@
             throw new Error("所有 Groq 模型都無法使用");
         }
 
+        async function callMistralAPI(messages) {
+            try {
+                console.log('嘗試使用 Mistral AI...');
+                
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 30000);
+                
+                const response = await fetch(MISTRAL_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${MISTRAL_API_KEY}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        model: "mistral-tiny",
+                        messages: messages,
+                        max_tokens: 1024
+                    }),
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Mistral AI 成功回應');
+                    return {
+                        reply: data.choices[0].message.content,
+                        provider: "Mistral AI"
+                    };
+                } else {
+                    const errorText = await response.text();
+                    console.log(`Mistral AI 失敗，狀態碼: ${response.status}`);
+                    console.log(`錯誤詳情: ${errorText}`);
+                    throw new Error(`Mistral API 錯誤: ${response.status}`);
+                }
+                
+            } catch (error) {
+                console.log(`Mistral AI 錯誤: ${error.message}`);
+                throw error;
+            }
+        }
+
+        async function callAI(messages) {
+            // 先嘗試 Groq API
+            try {
+                return await callGroqAPI(messages);
+            } catch (groqError) {
+                console.log('所有 Groq 模型都失敗，嘗試 Mistral AI...');
+                
+                // 如果 Groq 失敗，嘗試 Mistral AI
+                try {
+                    return await callMistralAPI(messages);
+                } catch (mistralError) {
+                    console.log('Mistral AI 也失敗了');
+                    throw new Error("所有 AI 服務都無法使用");
+                }
+            }
+        }
+
         function openAIChat() {
             switchScreen('ai-chat-screen');
             
             const cardNames = drawnCards.map(card => card.name).join(', ');
             const cardMeanings = drawnCards.map(card => `${card.name}: ${card.mean}`).join('\n');
             
-            addMessageToChat('assistant', `白天是AI工程師，晚上是算命師...\n\n你剛剛抽到的牌是：\n${cardNames}\n\n這邊直接請AI回答你...`);
+            addMessageToChat('assistant', `白天是AI工程師，晚上是AI算命師...\n\n你剛剛抽到的牌是：\n${cardNames}\n\n這邊直接請AI回答你...`);
             
             // 測試 API 連接
-            console.log('API Key 前10位:', GROQ_API_KEY.substring(0, 10));
-            console.log('API URL:', GROQ_API_URL);
+            console.log('Groq API Key 前10位:', GROQ_API_KEY.substring(0, 10));
+            console.log('Mistral API Key 前10位:', MISTRAL_API_KEY.substring(0, 10));
+            console.log('Groq API URL:', GROQ_API_URL);
+            console.log('Mistral API URL:', MISTRAL_API_URL);
         }
 
         function backToResults() {
@@ -1011,8 +1076,7 @@ ${cardInfo}
 3. 保持神秘而不失親和力的語調
 5. 用繁體中文回答`;
 
-                //使用新的多模型 API 調用
-                const result = await callGroqAPI([
+                const result = await callAI([
                     { role: "system", content: systemPrompt },
                     { role: "user", content: userMessage }
                 ]);
