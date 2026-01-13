@@ -2,7 +2,8 @@
 Click Link to Play or use...
 
 **Magic-Pages :**
-  1. Magic of Your Birth-number: https://amb8990.github.io/source/HTMLs/BirthNumber_1.0.2.html
+  1. Magic Card : https://amb8990.github.io/source/HTMLs/magicCard.html
+  2. Magic of Your Birth-number: https://amb8990.github.io/source/HTMLs/BirthNumber_1.0.2.html
 
 **Game-Pages :**
   1. Exit game 密室逃脫遊戲 : https://amb8990.github.io/source/HTMLs/EXIT01.html
