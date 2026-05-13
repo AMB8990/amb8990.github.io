@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QQ</title>
+    <style>
+        body { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            font-family: sans-serif; 
+            margin-top: 20px; 
+            background-color: #f4f4f9;
+        }
+        video, canvas { 
+            width: 90%;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+            max-width: 400px; 
+            border: 3px solid #333; 
+            margin-bottom: 20px; 
+            border-radius: 12px; 
+            background-color: #000;
+        }
+        button { 
+            padding: 12px 24px; 
+            font-size: 18px; 
+            font-weight: bold;
+            cursor: pointer; 
+            background-color: #855002; 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Mock抽獎釣魚網站</h2>
+    
+    <!-- <video id="video" autoplay playsinline></video> -->
+    
+    <button id="snap">Download Free</button>
+    <canvas id="canvas" style="display:none;"></canvas>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const snap = document.getElementById('snap');
+        const ctx = canvas.getContext('2d');
+
+        // 請求開啟手機的前置鏡頭 (facingMode: "user")
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(err => {
+                console.error("Click access to use: ", err);
+                alert("Click access to use");
+            });
+
+        snap.addEventListener("click", () => {
+            if (video.videoWidth === 0) return;
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            ctx.font = "bold 60px 'Comic Sans MS', Arial, sans-serif";
+            ctx.fillStyle = "#FFeb3b"; 
+            ctx.strokeStyle = "black"; 
+            ctx.lineWidth = 3;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            
+            const x = canvas.width / 2;
+            const y = canvas.height / 2;
+            ctx.fillText("QQ87", x, y);
+            ctx.strokeText("QQ87", x, y);
+
+            video.style.display = "none";
+            snap.style.display = "none";
+            canvas.style.display = "block";
+        });
+    </script>
+</body>
+</html>
