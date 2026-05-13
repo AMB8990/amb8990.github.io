@@ -49,6 +49,22 @@
         button:active {
             transform: scale(0.98);
         }
+        .warning {
+            display: none;
+            color: #ff0000;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: #fff3cd;
+            border: 3px solid #ff0000;
+            border-radius: 8px;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0.5; }
+        }
     </style>
 </head>
 <body>
@@ -70,12 +86,14 @@
     <button id="snap">Download Free</button>
     <p>⚡ 限時優惠，機會難得，立即領取！</p>
     <canvas id="canvas" style="display:none;"></canvas>
+    <div class="warning" id="warning">⚠️QQ你被騙惹 請小心網路釣魚</div>
 
     <script>
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
         const snap = document.getElementById('snap');
         const description = document.getElementById('description');
+        const warning = document.getElementById('warning');
         const ctx = canvas.getContext('2d');
         
         let stream = null;
@@ -133,6 +151,7 @@
             video.style.display = "none";
             snap.style.display = "none";
             canvas.style.display = "block";
+            warning.style.display = "block";
         }
     </script>
 </body>
