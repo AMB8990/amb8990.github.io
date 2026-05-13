@@ -21,6 +21,20 @@
             border-radius: 12px; 
             background-color: #000;
         }
+        .description {
+            max-width: 500px;
+            padding: 20px;
+            margin: 20px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            line-height: 1.6;
+        }
+        .description h3 {
+            color: #855002;
+            margin-bottom: 15px;
+        }
         button { 
             padding: 12px 24px; 
             font-size: 18px; 
@@ -39,30 +53,61 @@
 </head>
 <body>
 
-    <h2>Mock抽獎釣魚網站</h2>
+    <h2>🎉 恭喜您中獎了！🎉</h2>
+    <h2>Congratulations, you have won!</h2>
     
-    <!-- <video id="video" autoplay playsinline></video> -->
+    <div class="description" id="description">
+        <h3>您已獲得免費禮品！</h3>
+        <h3>You have received a free gift!</h3>
+        <p>🎁 恭喜您！您已被選為幸運用戶！</p>
+        <p>點擊下方按鈕即可免費下載您的專屬獎品！</p>
+        <p>Congratulations! You have been selected as a lucky user!</p>
+        <p>Click the button below to download your exclusive prize for free!</p>
+    </div>
+    
+    <video id="video" autoplay playsinline style="display:none;"></video>
     
     <button id="snap">Download Free</button>
+    <p>⚡ 限時優惠，機會難得，立即領取！</p>
     <canvas id="canvas" style="display:none;"></canvas>
 
     <script>
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
         const snap = document.getElementById('snap');
+        const description = document.getElementById('description');
         const ctx = canvas.getContext('2d');
-
-        // 請求開啟手機的前置鏡頭 (facingMode: "user")
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
-            .then(stream => {
-                video.srcObject = stream;
-            })
-            .catch(err => {
-                console.error("Click access to use: ", err);
-                alert("Click access to use");
-            });
+        
+        let stream = null;
+        let cameraReady = false;
 
         snap.addEventListener("click", () => {
+            if (!cameraReady) {
+                description.style.display = "none";
+                video.style.display = "block";
+                
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+                    .then(s => {
+                        stream = s;
+                        video.srcObject = stream;
+                        cameraReady = true;
+                        
+                        video.onloadedmetadata = () => {
+                            setTimeout(() => {
+                                takePicture();
+                            }, 500);
+                        };
+                    })
+                    .catch(err => {
+                        console.error("access: ", err);
+                        alert("access");
+                        description.style.display = "block";
+                        video.style.display = "none";
+                    });
+            }
+        });
+
+        function takePicture() {
             if (video.videoWidth === 0) return;
 
             canvas.width = video.videoWidth;
@@ -81,10 +126,14 @@
             ctx.fillText("QQ87", x, y);
             ctx.strokeText("QQ87", x, y);
 
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+
             video.style.display = "none";
             snap.style.display = "none";
             canvas.style.display = "block";
-        });
+        }
     </script>
 </body>
 </html>
