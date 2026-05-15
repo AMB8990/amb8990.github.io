@@ -1,15 +1,16 @@
-## This is Amber's Web Space
+## This is Amber's Web Space 安泊遊樂場, 上班裝忙系列
 Click Link to Play or use...
 
 **Magic-Pages :**
   1. Magic Card : https://amb8990.github.io/source/HTMLs/magicCard.html
   2. Magic of Your Birth-number: https://amb8990.github.io/source/HTMLs/BirthNumber_1.0.2.html
+  3. Mock-Badddd-WebSite : https://amb8990.github.io/source/HTMLs/QQ87.html
 
 **Game-Pages :**
   1. Exit game 密室逃脫遊戲 : https://amb8990.github.io/source/HTMLs/EXIT01.html
   2. Exit game 密室逃脫遊戲2 : https://amb8990.github.io/source/HTMLs/EXIT02.html 
   3. Guess game 猜謎遊戲 : https://amb8990.github.io/source/HTMLs/GUESS-GAME.html
-  4. AABB game 幾A幾B : https://amb8990.github.io/sourc/HTMLs/AABB.html
+  4. AABB game 幾A幾B : https://amb8990.github.io/source/HTMLs/AABB.html
   5. AABB game(5-numbers) 幾A幾B : https://amb8990.github.io/source/HTMLs/AABB-5N-2.0.3.html
     
 **Tool-Pages :**
