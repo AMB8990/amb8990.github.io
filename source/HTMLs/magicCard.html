@@ -1155,7 +1155,7 @@
             const message = textarea.value.trim();
 
             if (message) {
-                await recordToSheet("message", { message: message });
+                recordToSheet("message", { message: message });
                 document.getElementById('form-status').innerHTML = ``;
             }
         }
@@ -1165,7 +1165,7 @@
             const message = textarea.value.trim();
             
             if (message) {
-                await recordToSheet("message", { message: message });
+                recordToSheet("message", { message: message });
             }
             
             textarea.value = '';
@@ -1358,7 +1358,7 @@
             
             addMessageToChat('user', userMessage);
             input.value = '';
-            await recordToSheet("ai_question", { message: userMessage });
+            recordToSheet("ai_question", { message: userMessage });
             
             const thinkingDiv = document.createElement('div');
             thinkingDiv.className = 'ai-message thinking';
@@ -1385,7 +1385,7 @@ ${cardInfo}
                     { role: "user", content: userMessage }
                 ]);
                 
-                await recordToSheet("ai_response", {
+                recordToSheet("ai_response", {
                     message: result?.reply || result || '',
                     provider: result?.provider || 'AI'
                 });
