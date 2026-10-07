@@ -287,6 +287,25 @@
             accent-color: var(--primary-color);
         }
 
+        .language-switcher {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            margin: 0 0 12px;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .language-switcher select {
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            background: rgba(17, 15, 31, 0.8);
+            color: #fff;
+            outline: none;
+        }
+
         textarea {
             width: 100%;
             padding: 10px;
@@ -340,17 +359,26 @@
 </head>
 
 <body>
-    <p style="font-size: 0.9rem; opacity: 0.8; color: rgba(255,255,255,0.35);">版本: 1.0.2 - fixed 過期的key </p>
+    <div class="language-switcher">
+        <label for="language-select" style="opacity:0.8;">Language</label>
+        <select id="language-select" aria-label="Select language">
+            <option value="zh-tw">繁體中文</option>
+            <option value="english">English</option>
+            <option value="japanese">日本語</option>
+        </select>
+    </div>
+    <!-- <p style="font-size: 0.9rem; opacity: 0.8; color: rgba(255,255,255,0.35);">版本: 1.0.2 - fixed 過期的key </p> -->
+    <p style="font-size: 0.9rem; opacity: 0.8; color: rgba(255,255,255,0.35);">版本: 1.1.0 - Add Language Switching and Fixed AI chat</p>
 
     <section id="intro-screen" class="active">
         <div class="mystic-circle"></div>
-        <h1>安泊的AI線上塔羅</h1>
+        <h1 data-i18n="intro.title">安泊的AI線上塔羅</h1>
         <div style="margin: 30px 0;">
-            <input type="text" id="nickname" class="name-input" placeholder="朋朋 你的暱稱" maxlength="10">
+            <input type="text" id="nickname" class="name-input" data-i18n-placeholder="intro.nicknamePlaceholder" placeholder="朋朋 你的暱稱" maxlength="10">
         </div>
 
-        <p style="font-size: 0.9rem; opacity: 0.8;">來都來了，不算一下嗎</p>
-        <button onclick="goToModeSelection()">開始</button>
+        <p style="font-size: 0.9rem; opacity: 0.8;" data-i18n="intro.tagline">來都來了，不算一下嗎</p>
+        <button onclick="goToModeSelection()" data-i18n="intro.startButton">開始</button>
     </section>
 
     <section id="mode-screen">
@@ -358,71 +386,71 @@
         <h2 id="mode-greeting"></h2>
 
         <div class="mode-selection">
-            <h3 style="margin: 10px 0; font-size: 1.1rem;">選好後開始在心中默念你的問題...</h3>
+            <h3 style="margin: 10px 0; font-size: 1.1rem;" data-i18n="mode.instructions">選好後開始在心中默念你的問題...</h3>
             <label class="mode-option" onclick="selectMode(this, 'single')">
                 <input type="radio" name="mode" value="single" checked>
                 <div>
-                    <div><strong>單張模式 🃏</strong></div>
-                    <div class="mode-description">安泊建議: <br>問 Yes/No 類型的問題適合，一針濺血。</div>
+                    <div><strong data-i18n="mode.singleTitle">單張模式 🃏</strong></div>
+                    <div class="mode-description" data-i18n="mode.singleDescription">安泊建議: <br>問 Yes/No 類型的問題適合，一針濺血。</div>
                 </div>
             </label>
             <label class="mode-option" onclick="selectMode(this, 'three')">
                 <input type="radio" name="mode" value="three">
                 <div>
-                    <div><strong>三張模式 🃏🃏🃏</strong></div>
-                    <div class="mode-description">安泊建議: <br>抽出|過去|現在|未來|，以了解完整脈絡</div>
+                    <div><strong data-i18n="mode.threeTitle">三張模式 🃏🃏🃏</strong></div>
+                    <div class="mode-description" data-i18n="mode.threeDescription">安泊建議: <br>抽出|過去|現在|未來|，以了解完整脈絡</div>
                 </div>
             </label>
             <label class="mode-option" onclick="selectMode(this, 'four')">
                 <input type="radio" name="mode" value="four">
                 <div>
-                    <div><strong>四張模式 🃏🃏🃏🃏</strong></div>
-                    <div class="mode-description">安泊建議: <br>抽出|主要狀況|障礙|建議|結果|，詳細解讀</div>
+                    <div><strong data-i18n="mode.fourTitle">四張模式 🃏🃏🃏🃏</strong></div>
+                    <div class="mode-description" data-i18n="mode.fourDescription">安泊建議: <br>抽出|主要狀況|障礙|建議|結果|，詳細解讀</div>
                 </div>
             </label>
         </div>
-        <button onclick="goToDrawing()">開始洗牌</button>
+        <button onclick="goToDrawing()" data-i18n="mode.startShuffle">開始洗牌</button>
     </section>
 
     <section id="drawing-screen">
         <h2 id="greeting-text"></h2>
         <div class="deck-container" id="deck-visual"></div>
-        <button id="reveal-btn" style="opacity:0; pointer-events:none;" onclick="showResults()">查看結果</button>
+        <button id="reveal-btn" style="opacity:0; pointer-events:none;" onclick="showResults()" data-i18n="drawing.revealResult">查看結果</button>
     </section>
 
     <section id="result-screen">
-        <p style="font-size: 0.8rem; opacity: 0.7;">點擊卡牌看解讀</p>
+        <p style="font-size: 0.8rem; opacity: 0.7;" data-i18n="result.clickCard">點擊卡牌看解讀</p>
 
         <div class="spread-area" id="cards-container"></div>
-        <button type="button" onclick="openAIChat();" style="font-size: 0.9rem; padding: 6px 16px; margin-left: 10px; background: linear-gradient(45deg, #daaf78 0%, #f5b221 100%); border: none; color: white;">可以點這裡問AI</button>
+        <button type="button" onclick="openAIChat();" style="font-size: 0.9rem; padding: 6px 16px; margin-left: 10px; background: linear-gradient(45deg, #daaf78 0%, #f5b221 100%); border: none; color: white;" data-i18n="result.askAI">可以點這裡問AI</button>
 
         <hr style="width: 100%; border: 0.5px solid #444; margin: 40px 0;">
     
         <div style="width: 100%;">
-            <h3>給安泊一點意見</h3>
+            <h3 data-i18n="result.feedbackTitle">給安泊一點意見</h3>
             <form id="feedback-form">
                 <div class="rating-group">
                     <label class="rating-option" onclick="selectRating(this, '有準有喜歡')">
-                        <input type="radio" name="rating" value="有準有喜歡" required> 有準有喜歡
+                        <input type="radio" name="rating" value="有準有喜歡" required> <span data-i18n="result.rating.good">有準有喜歡</span>
                     </label>
                     <label class="rating-option" onclick="selectRating(this, '再想想ㄟ')">
-                        <input type="radio" name="rating" value="再想想ㄟ"> 再想想ㄟ
+                        <input type="radio" name="rating" value="再想想ㄟ"> <span data-i18n="result.rating.thinkAgain">再想想ㄟ</span>
                     </label>
                     <label class="rating-option" onclick="selectRating(this, '多做幾版玩玩看')">
-                        <input type="radio" name="rating" value="多做幾版玩玩看"> 多做幾版玩玩看
+                        <input type="radio" name="rating" value="多做幾版玩玩看"> <span data-i18n="result.rating.moreVersions">多做幾版玩玩看</span>
                     </label>
                     <label class="rating-option" onclick="selectRating(this, '我不信我只是來支持安泊')">
-                        <input type="radio" name="rating" value="我不信我只是來支持安泊"> 我不信，我只是來支持安泊
+                        <input type="radio" name="rating" value="我不信我只是來支持安泊"> <span data-i18n="result.rating.support">我不信，我只是來支持安泊</span>
                     </label>
                 </div>
 
-                <textarea name="message" placeholder="選填-跟安泊說的建議" onblur="submitAdditionalMessage()"></textarea>
+                <textarea name="message" data-i18n-placeholder="result.messagePlaceholder" placeholder="選填-跟安泊說的建議" onblur="submitAdditionalMessage()"></textarea>
                 <div style="display: flex; align-items: center; margin-top: 10px;">
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
-                    <button type="button" onclick="submitFeedback();" style="font-size: 0.9rem; padding: 6px 24px; flex: 1; max-width: 140px;">送出意見</button>
+                    <button type="button" onclick="submitFeedback();" style="font-size: 0.9rem; padding: 6px 24px; flex: 1; max-width: 140px;" data-i18n="result.submitFeedback">送出意見</button>
                     <span id="form-status" style="margin: 0 10px; font-size:0.85rem; color:var(--primary-color); flex: 0 0 auto;"></span>
-                    <button type="button" onclick="location.reload()" style="font-size: 0.9rem; padding: 6px 24px; flex: 1; max-width: 140px;">再算一次</button>
+                    <button type="button" onclick="location.reload()" style="font-size: 0.9rem; padding: 6px 24px; flex: 1; max-width: 140px;" data-i18n="result.shuffleAgain">再算一次</button>
                 </div>
             </form>
         </div>
@@ -432,18 +460,17 @@
     <section id="ai-chat-screen">
         <div style="width: 100%; max-height: 70vh; overflow-y: auto; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; margin-bottom: 20px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h3 style="margin: 0; color: var(--primary-color);">AI來看牌</h3>
-                <button onclick="backToResults()" style="background: transparent; border: 1px solid #666; color: #ccc; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem;">返回</button>
+                <h3 style="margin: 0; color: var(--primary-color);" data-i18n="ai.title">AI來看牌</h3>
+                <button onclick="backToResults()" style="background: transparent; border: 1px solid #666; color: #ccc; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem;" data-i18n="ai.back">返回</button>
             </div>
-            <!-- <p style="font-size: 0.75rem; color: rgba(255,255,255,0.35);">有Bug可以回上頁留言給安泊...感謝</p> -->
             <div id="ai-chat-messages" style="min-height: 300px; max-height: 400px; overflow-y: auto; padding: 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: rgba(0,0,0,0.2);"></div>
         </div>
         
         <div style="display: flex; gap: 10px; align-items: center;">
-            <input type="text" id="ai-input" placeholder="問問AI有什麼見解..." style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #666; border-radius: 20px; color: white; outline: none;">
-            <button id="ai-send-btn" onclick="sendToAI()" style="background: linear-gradient(45deg, #daaf78 0%, #db9a0c 100%); border: none; color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer;">發送</button>
+            <input type="text" id="ai-input" data-i18n-placeholder="ai.inputPlaceholder" placeholder="問問AI有什麼見解..." style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #666; border-radius: 20px; color: white; outline: none;">
+            <button id="ai-send-btn" onclick="sendToAI()" style="background: linear-gradient(45deg, #daaf78 0%, #db9a0c 100%); border: none; color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer;" data-i18n="ai.send">發送</button>
         </div>
-        <div style="font-size: 0.75rem; color: rgba(255,255,255,0.35); margin-top: 10px;">AI回答可能會出錯或幻覺，僅供參考。</div>
+        <div style="font-size: 0.75rem; color: rgba(255,255,255,0.35); margin-top: 10px;" data-i18n="ai.disclaimer">AI回答可能會出錯或幻覺，僅供參考。</div>
     </section>
 
     <script>
@@ -453,6 +480,173 @@
         let currentMode = "single";
         let sessionStarted = false;
         let drawnCards = [];
+
+        const translations = {
+            'zh-tw': {
+                intro: {
+                    title: '安泊的AI線上塔羅',
+                    nicknamePlaceholder: '朋朋 你的暱稱',
+                    tagline: '來都來了，不算一下嗎',
+                    startButton: '開始'
+                },
+                mode: {
+                    instructions: '選好後開始在心中默念你的問題...',
+                    singleTitle: '單張模式 🃏',
+                    singleDescription: '安泊建議: <br>問 Yes/No 類型的問題適合，一針濺血。',
+                    threeTitle: '三張模式 🃏🃏🃏',
+                    threeDescription: '安泊建議: <br>抽出|過去|現在|未來|，以了解完整脈絡',
+                    fourTitle: '四張模式 🃏🃏🃏🃏',
+                    fourDescription: '安泊建議: <br>抽出|主要狀況|障礙|建議|結果|，詳細解讀',
+                    startShuffle: '開始洗牌',
+                    greeting: '安泊正在準備...請繼續默念你的問題',
+                    chooseMode: '題示: 請選擇一種占卜模式~',
+                    enterNickname: '題示: 輸入暱稱以繼續~'
+                },
+                drawing: {
+                    revealResult: '查看結果'
+                },
+                result: {
+                    clickCard: '點擊卡牌看解讀',
+                    askAI: '可以點這裡問AI',
+                    feedbackTitle: '給安泊一點意見',
+                    messagePlaceholder: '選填-跟安泊說的建議',
+                    submitFeedback: '送出意見',
+                    shuffleAgain: '再算一次',
+                    rating: {
+                        good: '有準有喜歡',
+                        thinkAgain: '再想想ㄟ',
+                        moreVersions: '多做幾版玩玩看',
+                        support: '我不信，我只是來支持安泊'
+                    }
+                },
+                ai: {
+                    title: 'AI來看牌',
+                    back: '返回',
+                    inputPlaceholder: '問問AI有什麼見解...',
+                    send: '發送',
+                    disclaimer: 'AI回答可能會出錯或幻覺，僅供參考。',
+                    thinking: 'AI 正在思考中...',
+                    intro: '白天是AI工程師，晚上是AI算命師...\n\n你剛剛抽到的牌是：\n',
+                    error: '抱歉，AI 暫時無法回應：',
+                    retry: '請稍後再試。',
+                    languagePrompt: '用繁體中文回答'
+                },
+                alert: {
+                    noNickname: '題示: 輸入暱稱以繼續~',
+                    noMode: '題示: 請選擇一種占卜模式~'
+                }
+            },
+            english: {
+                intro: {
+                    title: 'Amber AI Tarot',
+                    nicknamePlaceholder: 'Nickname',
+                    tagline: 'You are here, so why not draw a card?',
+                    startButton: 'Start'
+                },
+                mode: {
+                    instructions: 'Focus on your question before you begin...',
+                    singleTitle: 'Single Card 🃏',
+                    singleDescription: 'Suggested: <br>Best for Yes/No questions, direct and sharp.',
+                    threeTitle: 'Three Cards 🃏🃏🃏',
+                    threeDescription: 'Suggested: <br>Past | Present | Future for the full picture.',
+                    fourTitle: 'Four Cards 🃏🃏🃏🃏',
+                    fourDescription: 'Suggested: <br>Current situation | obstacle | advice | outcome.',
+                    startShuffle: 'Shuffle',
+                    greeting: 'Preparing your reading... hold your question in mind.',
+                    chooseMode: 'Please choose a spread.',
+                    enterNickname: 'Please enter a nickname.'
+                },
+                drawing: {
+                    revealResult: 'Reveal'
+                },
+                result: {
+                    clickCard: 'Click a card to read the interpretation',
+                    askAI: 'Ask AI',
+                    feedbackTitle: 'Your feedback',
+                    messagePlaceholder: 'Optional: leave a suggestion',
+                    submitFeedback: 'Submit',
+                    shuffleAgain: 'Draw again',
+                    rating: {
+                        good: 'Accurate and liked it',
+                        thinkAgain: 'Need more thought',
+                        moreVersions: 'Try more variations',
+                        support: 'I just came to support Amber'
+                    }
+                },
+                ai: {
+                    title: 'AI Reading',
+                    back: 'Back',
+                    inputPlaceholder: 'Ask the AI for insight...',
+                    send: 'Send',
+                    disclaimer: 'AI guidance may be inaccurate or speculative; use only as a reference.',
+                    thinking: 'AI is thinking...',
+                    intro: 'By day I am an AI engineer, by night I am an AI fortune teller...\n\nThe cards you drew are:\n',
+                    error: 'Sorry, the AI is unavailable right now: ',
+                    retry: 'Please try again later.',
+                    languagePrompt: 'Answer in English'
+                },
+                alert: {
+                    noNickname: 'Please enter a nickname to continue.',
+                    noMode: 'Please choose a spread.'
+                }
+            },
+            japanese: {
+                intro: {
+                    title: 'Amber AI タロット',
+                    nicknamePlaceholder: 'ニックネーム',
+                    tagline: 'ここまで来たなら、一回引いてみよう',
+                    startButton: '開始'
+                },
+                mode: {
+                    instructions: '質問を心に思い浮かべてください...',
+                    singleTitle: '1枚モード 🃏',
+                    singleDescription: 'おすすめ: <br>Yes/No のような質問に向いています。',
+                    threeTitle: '3枚モード 🃏🃏🃏',
+                    threeDescription: 'おすすめ: <br>過去 | 現在 | 未来を見て全体像をつかみます。',
+                    fourTitle: '4枚モード 🃏🃏🃏🃏',
+                    fourDescription: 'おすすめ: <br>現状 | 障害 | アドバイス | 結果を詳しく読み解きます。',
+                    startShuffle: 'シャッフル開始',
+                    greeting: '読み取りを準備しています...質問を心に置いてください。',
+                    chooseMode: 'スプレッドを選んでください。',
+                    enterNickname: 'ニックネームを入力してください。'
+                },
+                drawing: {
+                    revealResult: '結果を見る'
+                },
+                result: {
+                    clickCard: 'カードをクリックして意味を見る',
+                    askAI: 'AIに聞く',
+                    feedbackTitle: 'ご意見',
+                    messagePlaceholder: '任意: 感想や提案を記入',
+                    submitFeedback: '送信',
+                    shuffleAgain: 'もう一度引く',
+                    rating: {
+                        good: '当たっていて気に入った',
+                        thinkAgain: 'もう少し考えたい',
+                        moreVersions: '別バージョンも試したい',
+                        support: '応援のために来ました'
+                    }
+                },
+                ai: {
+                    title: 'AI鑑定',
+                    back: '戻る',
+                    inputPlaceholder: 'AIに質問してみましょう...',
+                    send: '送信',
+                    disclaimer: 'AIの回答は誤りや幻覚を含む場合があるため、参考程度にしてください。',
+                    thinking: 'AIが考えています...',
+                    intro: '昼はAIエンジニア、夜はAI占い師...\n\n引いたカードは：\n',
+                    error: 'すみません、AIが一時的に利用できません：',
+                    retry: '後でもう一度お試しください。',
+                    languagePrompt: '日本語で答えて'
+                },
+                alert: {
+                    noNickname: '続けるにはニックネームを入力してください。',
+                    noMode: 'スプレッドを選択してください。'
+                }
+            }
+        };
+
+        let currentLanguage = 'zh-tw';
 
         const modeLabels = {
             'single': '單張模式',
@@ -465,7 +659,93 @@
             'four': ['現狀', '障礙', '建議', '結果']
         };
 
+        const translatedCardPositions = {
+            'zh-tw': {
+                'three': ['過去', '現在', '未來'],
+                'four': ['現狀', '障礙', '建議', '結果']
+            },
+            'english': {
+                'three': ['Past', 'Present', 'Future'],
+                'four': ['Current', 'Obstacle', 'Advice', 'Outcome']
+            },
+            'japanese': {
+                'three': ['過去', '現在', '未来'],
+                'four': ['現状', '障害', 'アドバイス', '結果']
+            }
+        };
+
         const imgURL = "https://amb8990.github.io/source/img/TarotCards/";
+
+        function resolveTranslationValue(obj, path) {
+            return path.split('.').reduce((current, part) => {
+                if (current && typeof current === 'object' && part in current) {
+                    return current[part];
+                }
+                return undefined;
+            }, obj);
+        }
+
+        function getLocalizedText(group, key) {
+            const lang = translations[currentLanguage] || translations['zh-tw'];
+            const section = lang[group] || {};
+            const value = resolveTranslationValue(section, key);
+            if (value !== undefined && value !== null) {
+                return value;
+            }
+
+            const fallbackSection = translations['zh-tw'][group] || {};
+            const fallbackValue = resolveTranslationValue(fallbackSection, key);
+            if (fallbackValue !== undefined && fallbackValue !== null) {
+                return fallbackValue;
+            }
+
+            return key;
+        }
+
+        function applyLanguage(lang = currentLanguage) {
+            currentLanguage = lang;
+            document.documentElement.lang = lang;
+
+            document.querySelectorAll('[data-i18n]').forEach((el) => {
+                const key = el.getAttribute('data-i18n');
+                const [group, ...tail] = key.split('.');
+                const path = tail.join('.');
+                el.innerHTML = getLocalizedText(group, path);
+            });
+
+            document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                const [group, ...tail] = key.split('.');
+                const path = tail.join('.');
+                el.placeholder = getLocalizedText(group, path);
+            });
+
+            const nicknameInput = document.getElementById('nickname');
+            if (nicknameInput && !nicknameInput.dataset.userSet) {
+                nicknameInput.placeholder = getLocalizedText('intro', 'nicknamePlaceholder');
+            }
+
+            const modeGreeting = document.getElementById('mode-greeting');
+            if (modeGreeting && currentUser) {
+                let welcomeText = `${currentUser}，${getLocalizedText('mode', 'greeting')}`;
+                if (currentLanguage === 'english') {
+                    welcomeText = `${currentUser}, ${getLocalizedText('mode', 'greeting')}`;
+                } else if (currentLanguage === 'japanese') {
+                    welcomeText = `${currentUser}さん、${getLocalizedText('mode', 'greeting')}`;
+                }
+                modeGreeting.innerText = welcomeText;
+            }
+
+            const greetingText = document.getElementById('greeting-text');
+            if (greetingText && !greetingText.dataset.drawingText) {
+                greetingText.innerText = getLocalizedText('mode', 'greeting');
+            }
+
+            const select = document.getElementById('language-select');
+            if (select) {
+                select.value = currentLanguage;
+            }
+        }
 
         const tarotDeck = [
             { name: "愚者-正位", image: `<img src="${imgURL}00.PNG" alt="愚者-正位" style="width:80px;height:auto;">`, mean: "新的開始、冒險、自由、相信直覺。", link: "" },
@@ -643,12 +923,17 @@
         function goToModeSelection() {
             const input = document.getElementById('nickname');
             if (!input.value.trim()) {
-                alert("題示: 輸入暱稱以繼續~");
+                alert(getLocalizedText('alert', 'noNickname'));
                 return;
             }
 
             currentUser = input.value.trim();
-            document.getElementById('mode-greeting').innerText = `${currentUser}，歡迎你~ `;
+            const welcomeText = currentLanguage === 'english'
+                ? `Welcome, ${currentUser}!`
+                : currentLanguage === 'japanese'
+                    ? `${currentUser}さん、ようこそ！`
+                    : `${currentUser}，歡迎你~ `;
+            document.getElementById('mode-greeting').innerText = welcomeText;
 
             switchScreen('mode-screen');
         }
@@ -656,18 +941,15 @@
         async function goToDrawing() {
             const selectedMode = document.querySelector('input[name="mode"]:checked');
             if (!selectedMode) {
-                alert("題示: 請選擇一種占卜模式~");
+                alert(getLocalizedText('alert', 'noMode'));
                 return;
             }
 
             currentMode = selectedMode.value;
 
-            if (!sessionStarted) {
-                await recordToSheet("start", {});
-                sessionStarted = true;
-            }
+            recordToSheet("start", {});
 
-            document.getElementById('greeting-text').innerText = `安泊正在準備...請繼續默念你的問題`;
+            document.getElementById('greeting-text').innerText = getLocalizedText('mode', 'greeting');
 
             switchScreen('drawing-screen');
             const visual = document.getElementById('deck-visual');
@@ -720,7 +1002,13 @@
                     const cardNames = drawnCards.map(card => card.name).join(', ');
                     params.append("cards", cardNames);
                     params.append("rating", "");
-                    params.append("message", `[問AI] ${data.message}`);
+                    params.append("message", `[問AI] ${toSafeText(data.message)}`);
+                } else if (type === "ai_response") {
+                    const cardNames = drawnCards.map(card => card.name).join(', ');
+                    params.append("cards", cardNames);
+                    params.append("rating", "");
+                    const providerText = data.provider ? ` / ${toSafeText(data.provider)}` : '';
+                    params.append("message", `[AI回覆] ${toSafeText(data.message)}${providerText}`);
                 }
 
                 await fetch(GAS_URL + "?" + params.toString(), {
@@ -750,7 +1038,7 @@
                 drawnCards.push(tarotDeck[randomIndex]);
             }
 
-            await recordToSheet("cards_drawn", {});
+            recordToSheet("cards_drawn", {});
 
             const container = document.getElementById('cards-container');
             container.innerHTML = '';
@@ -808,10 +1096,11 @@
                 const wrapper = document.createElement('div');
                 wrapper.style.cssText = 'display: flex; flex-direction: column; align-items: center; width: 110px; margin-bottom: 20px;';
 
-                if (cardPositions[currentMode]) {
+                const positionSet = translatedCardPositions[currentLanguage]?.[currentMode] || cardPositions[currentMode];
+                if (positionSet) {
                     const positionLabel = document.createElement('div');
                     positionLabel.style.cssText = 'font-size: 0.8rem; color: var(--primary-color); margin-bottom: 8px; text-align: center; font-weight: bold;';
-                    positionLabel.innerText = cardPositions[currentMode][index];
+                    positionLabel.innerText = positionSet[index];
                     wrapper.appendChild(positionLabel);
                 }
 
@@ -856,7 +1145,7 @@
             const radio = element.querySelector('input[type="radio"]');
             radio.checked = true;
 
-            await recordToSheet("rating", { rating: rating });
+            // await recordToSheet("rating", { rating: rating });
 
             document.getElementById('form-status').innerHTML = ``;
         }
@@ -902,7 +1191,7 @@
          const MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions";
         //就知道你在找什麼
         //只是免費的Key要拿就拿吧，因為安泊懶得寫後端 :DDD
-        const GROQ_API_KEY = "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";
+        const GROQ_API_KEY = "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";
         const MISTRAL_API_KEY = "cOxEi2bMTh15YetsbIjUXBawhndKsi6T"; 
         
         const GROQ_MODELS = [
@@ -1023,11 +1312,9 @@
             switchScreen('ai-chat-screen');
             
             const cardNames = drawnCards.map(card => card.name).join(', ');
-            const cardMeanings = drawnCards.map(card => `${card.name}: ${card.mean}`).join('\n');
+            const introText = `${getLocalizedText('ai', 'intro')}${cardNames}\n\n${currentLanguage === 'english' ? 'Ask your question here.' : currentLanguage === 'japanese' ? 'ここで質問してください。' : '這邊直接請AI回答你...'}`;
+            addMessageToChat('assistant', introText);
             
-            addMessageToChat('assistant', `白天是AI工程師，晚上是AI算命師...\n\n你剛剛抽到的牌是：\n${cardNames}\n\n這邊直接請AI回答你...`);
-            
-            // 測試 API 連接
             console.log('Groq API Key 前10位:', GROQ_API_KEY.substring(0, 10));
             console.log('Mistral API Key 前10位:', MISTRAL_API_KEY.substring(0, 10));
             console.log('Groq API URL:', GROQ_API_URL);
@@ -1038,11 +1325,26 @@
             switchScreen('result-screen');
         }
 
+        function toSafeText(value) {
+            if (value === null || value === undefined) return '';
+            if (typeof value === 'string') return value;
+            if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+            if (typeof value === 'object') {
+                try {
+                    return JSON.stringify(value);
+                } catch (error) {
+                    return Object.prototype.toString.call(value);
+                }
+            }
+            return String(value);
+        }
+
         function addMessageToChat(role, message) {
             const chatContainer = document.getElementById('ai-chat-messages');
             const messageDiv = document.createElement('div');
+            const safeMessage = toSafeText(message).replace(/\r?\n/g, '<br>');
             messageDiv.className = `ai-message ${role === 'user' ? 'user-message' : 'assistant'}`;
-            messageDiv.innerHTML = message.replace(/\n/g, '<br>');
+            messageDiv.innerHTML = safeMessage;
             chatContainer.appendChild(messageDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
@@ -1060,14 +1362,15 @@
             
             const thinkingDiv = document.createElement('div');
             thinkingDiv.className = 'ai-message thinking';
-            thinkingDiv.innerHTML = 'AI 正在思考中...';
+            thinkingDiv.innerHTML = getLocalizedText('ai', 'thinking');
             document.getElementById('ai-chat-messages').appendChild(thinkingDiv);
             
             sendBtn.disabled = true;
-            sendBtn.textContent = '發送中...';
+            sendBtn.textContent = currentLanguage === 'english' ? 'Sending...' : currentLanguage === 'japanese' ? '送信中...' : '發送中...';
             
             try {
                 const cardInfo = drawnCards.map(card => `${card.name}: ${card.mean}`).join('\n');
+                const languageInstruction = getLocalizedText('ai', 'languagePrompt');
                 const systemPrompt = `你是一位專業的塔羅牌解讀師。用戶剛剛完成了${modeLabels[currentMode]}的占卜，抽到的牌是：
 ${cardInfo}
 
@@ -1075,25 +1378,31 @@ ${cardInfo}
 1. 具有深度和意義，不要回太長
 2. 聯繫用戶抽到的具體牌面
 3. 保持神秘而不失親和力的語調
-5. 用繁體中文回答`;
+4. ${languageInstruction}`;
 
                 const result = await callAI([
                     { role: "system", content: systemPrompt },
                     { role: "user", content: userMessage }
                 ]);
                 
+                await recordToSheet("ai_response", {
+                    message: result?.reply || result || '',
+                    provider: result?.provider || 'AI'
+                });
+                
                 thinkingDiv.remove();
                 
-                const aiReply = `${result.reply}\n\n<small style="opacity: 0.6; font-size: 0.7em;">由 ${result.provider} 提供</small>`;
+                const safeReply = toSafeText(result?.reply || result || '');
+                const aiReply = `${safeReply}\n\n<small style="opacity: 0.6; font-size: 0.7em;">由 ${toSafeText(result?.provider || 'AI')} 提供</small>`;
                 addMessageToChat('assistant', aiReply);
                 
             } catch (error) {
                 console.error('AI API 錯誤:', error);
-                thinkingDiv.innerHTML = `抱歉，AI 暫時無法回應：${error.message}<br>請稍後再試。`;
+                thinkingDiv.innerHTML = `${getLocalizedText('ai', 'error')}${error.message}<br>${getLocalizedText('ai', 'retry')}`;
                 thinkingDiv.className = 'ai-message assistant';
             } finally {
                 sendBtn.disabled = false;
-                sendBtn.textContent = '發送';
+                sendBtn.textContent = getLocalizedText('ai', 'send');
             }
         }
 
@@ -1107,6 +1416,15 @@ ${cardInfo}
                     }
                 });
             }
+
+            const languageSelect = document.getElementById('language-select');
+            if (languageSelect) {
+                languageSelect.addEventListener('change', function () {
+                    applyLanguage(this.value);
+                });
+            }
+
+            applyLanguage();
         });
     </script>
 </body>
